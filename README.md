@@ -78,3 +78,9 @@ docs/project/
 ```gitignore
 docs/project/generated/
 ```
+
+## Bootstrap Command
+
+```bash
+./bootstrap-wiki.sh /abs/path/to/target-repo
+```
