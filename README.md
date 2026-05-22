@@ -2,6 +2,14 @@
 
 This folder is a reviewable blueprint for per-repo documentation.
 
+## Agnostic Design
+
+- No required programming language.
+- No required framework/runtime.
+- No hardcoded branch model.
+- All branch, release, and review policy fields are placeholders to be set per repo.
+- Structure is reusable for backend, frontend, data, infra, services, libraries, and mixed stacks.
+
 ## Target Structure
 
 ```text

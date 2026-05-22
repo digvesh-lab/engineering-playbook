@@ -101,10 +101,22 @@ updated: $(date +%F)
 
 # Branching Strategy
 
-- main: default branch
-- dev: integration branch
-- feature/T-101-<short-name>
-- fix/T-101-<short-name>
+## Branch Roles
+
+- Default branch: <set-per-repo>
+- Integration/release branches: <set-per-repo>
+
+## Branch Naming
+
+- Feature: <set-pattern-per-repo>
+- Fix: <set-pattern-per-repo>
+- Hotfix: <set-pattern-per-repo>
+
+## Merge Policy
+
+- PR requirement: <set-per-repo>
+- Merge method: <set-per-repo>
+- Review/check gates: <set-per-repo>
 "
 
 write_if_missing "$DOCS_ROOT/features/README.md" "---
