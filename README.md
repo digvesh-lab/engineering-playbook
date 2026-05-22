@@ -1,14 +1,15 @@
-# Repo Wiki Structure (Review Copy)
+# Agnostic Repo Wiki Playbook
 
-This folder is a reviewable blueprint for per-repo documentation.
+This repo provides a reusable, production-readiness wiki structure for any software repository. It is intentionally neutral: it does not assume a programming language, framework, runtime, hosting model, API style, delivery process, or branch model.
 
-## Agnostic Design
+## Design Rules
 
-- No required programming language.
-- No required framework/runtime.
-- No hardcoded branch model.
-- All branch, release, and review policy fields are placeholders to be set per repo.
-- Structure is reusable for backend, frontend, data, infra, services, libraries, and mixed stacks.
+- Keep shared templates generic; record repo-specific facts only in the target repo.
+- Use placeholders where an owner must make a local decision.
+- Treat APIs broadly: HTTP, events, CLI commands, files, packages, jobs, dashboards, and manual workflow contracts all count.
+- Treat operations broadly: deploy, publish, rollback, migration, incident response, and support procedures all count.
+- Express graph edges through typed frontmatter `relations`; do not rely on prose links for graph generation.
+- Keep generated or volatile outputs under `docs/project/generated/`.
 
 ## Target Structure
 
@@ -31,11 +32,11 @@ docs/project/
 
   adr/
     README.md
-    0001-*.md
+    0001-wiki-first-documentation.md
 
   features/
     README.md
-    FEAT-<id>/
+    FEAT-template/
       overview.md
       design.md
       api.md
@@ -47,9 +48,9 @@ docs/project/
   apis/
     index.md
     endpoints/
-      <domain>-<action>.md
+      template.md
     events/
-      <event-name>.md
+      template.md
 
   data/
     schema.md
@@ -62,15 +63,18 @@ docs/project/
     constraints.md
     review-checklist.md
 
+  graph/
+    contract.md
+
   runbooks/
     deploy.md
     rollback.md
-    incident-<topic>.md
+    incident-template.md
     auth-gh-switch.md
 
   incidents/
     YYYY/
-      YYYY-MM-DD-<incident-id>.md
+      YYYY-MM-DD-incident-template.md
 
   changelog/
     YYYY-MM.md
@@ -79,16 +83,42 @@ docs/project/
     YYYY-MM.md
 
   generated/
-```
-
-## Git Ignore
-
-```gitignore
-docs/project/generated/
+    graph.json
+    graph.html
 ```
 
 ## Bootstrap Command
 
 ```bash
 ./bootstrap-wiki.sh /abs/path/to/target-repo
+node validate-wiki-graph.js /abs/path/to/target-repo
+node generate-wiki-graph.js /abs/path/to/target-repo
 ```
+
+The bootstrap script writes missing files only. It does not overwrite existing wiki pages, so teams can safely re-run it after the playbook expands.
+
+## Graph Contract
+
+Every Markdown page under `docs/project/`, except files under `docs/project/generated/`, must include frontmatter with a stable `id`, valid `type`, valid `status`, and `relations`.
+
+Use typed relations for machine-readable edges:
+
+```yaml
+relations:
+  - type: depends_on
+    target: RUN-rollback
+  - type: exposes
+    target: API-session-create
+```
+
+Use `relations: []` only for pages that are intentionally standalone.
+
+## Git Ignore
+
+Target repos should ignore generated wiki artifacts:
+
+```gitignore
+docs/project/generated/
+```
+
+The bootstrap script adds this entry when missing.
