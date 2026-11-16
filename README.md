@@ -1,7 +1,7 @@
 # Engineering Playbook
 
-How I work on software projects with coding agents: a set of agent skills,
-and the tooling for a repository wiki. The skills name no agent product.
+How I work on software projects with coding agents: a set of agent skills
+for the work itself, for git conventions, and for project docs. The skills name no agent product.
 They run on any agent that reads the [Agent Skills](https://agentskills.io)
 format.
 
@@ -10,7 +10,7 @@ format.
 | work-flow | a chain of skills that takes a coding task from assessment to a pull request | `skills/work-*` |
 | git-standards | default conventions for branches, commits, pull requests, and issues | `skills/git-standards` |
 | subagents | 4 role definitions that work-flow uses when the agent supports them | `adapters/<agent>/agents/` |
-| repo wiki | a template and scripts for a `docs/project/` wiki with a typed graph | repository root |
+| project-docs | a minimal `docs/` folder: 5 items, for agents and people | `skills/project-docs` |
 
 ## Install
 
@@ -39,7 +39,8 @@ cd engineering-playbook
 | `codex` | `~/.agents/skills/` | `~/.codex/agents/` |
 | `kiro` | `~/.kiro/skills/` | not installed |
 
-Install all the `work-*` skills together. `git-standards` works alone. Each step skill reads the
+Install all the `work-*` skills together. `git-standards` and `project-docs`
+work alone. Each step skill reads the
 contract and the reference files in `work-flow`.
 
 **Without subagents** the flow runs in one thread. It has no model routing
@@ -164,59 +165,28 @@ The copies are in `skills/work-flow/borrowed/`, with their source commit in
 `LOCK.md`. The contract has priority over a borrowed file.
 `/work-borrow-update` updates them and shows each change before it replaces a file.
 
-## Repo wiki
+## Project docs
 
-A reusable wiki structure for any software repository. It does not assume a
-language, framework, hosting model, delivery process, or branch model.
+The `project-docs` skill keeps a repository's docs minimal: 5 items, for
+agents and for people.
 
-```bash
-./bootstrap-wiki.sh /abs/path/to/target-repo
-node validate-wiki-graph.js /abs/path/to/target-repo
-node generate-wiki-graph.js /abs/path/to/target-repo
+```
+docs/
+  README.md        what the system is, how to run it, where things are
+  architecture.md  one page: the main parts, the data flow, the external systems
+  decisions/       one short file for each decision; never rewritten
+  runbooks.md      deploy, rollback, and incident steps
+  glossary.md      each domain term and its one meaning
 ```
 
-The bootstrap script writes only the files that are missing. It does not
-overwrite a wiki page, so you can run it again after the playbook grows. It
-also adds `docs/project/generated/` to `.gitignore`.
+The rule: write down only what the code cannot tell you. Docs say why, how
+to operate the system, and what the terms mean. What exists and what calls
+what comes from the code. A code graph makes that cheap to read;
+[graphify](https://github.com/Graphify-Labs/graphify) is recommended, and not
+required.
 
-```text
-docs/project/
-  README.md  index.md
-  metadata/      glossary, ownership, lifecycle
-  architecture/  context, containers, components, data-flows, dependencies
-  adr/           decision records
-  features/      FEAT-template/ (overview, design, api, data-model, testing, rollout, runbook)
-  apis/          index, endpoints/, events/
-  data/          schema, migrations, contracts
-  conventions/   branching, coding, constraints, review-checklist
-  graph/         contract
-  runbooks/      deploy, rollback, incident-template, auth-gh-switch
-  incidents/     YYYY/
-  changelog/     YYYY-MM.md
-  logs/          YYYY-MM.md
-  generated/     graph.json, graph.html
-```
-
-Rules for the wiki:
-
-- Keep the shared templates general. Record the facts of a repository only in that repository.
-- "API" includes HTTP, events, CLI commands, files, packages, jobs, and manual contracts.
-- Each Markdown page under `docs/project/`, except `generated/`, has
-  frontmatter with a stable `id`, a valid `type`, a valid `status`, and `relations`.
-- Graph edges come from typed `relations`, not from links in the text:
-
-```yaml
-relations:
-  - type: depends_on
-    target: RUN-rollback
-  - type: exposes
-    target: API-session-create
-```
-
-- Use `relations: []` only for a page that is standalone on purpose.
-
-`frontmatter-template.md` has the frontmatter. `agent-workflow.md` has the
-order in which an agent reads and updates the wiki.
+The docs change only when a decision, a run step, a main part, or a term
+changes. A bug fix or a new endpoint needs no docs change.
 
 ## Licence and credit
 
@@ -224,7 +194,7 @@ MIT. See `LICENSE`. You can use, change, and share this work. Each copy, or
 substantial part of it, must keep the copyright notice and the licence text.
 
 The work-flow contract, the step skills, `work-route`, `work-retro`, the
-subagent definitions, `git-standards`, and the wiki tooling are the
+subagent definitions, `git-standards`, and `project-docs` are the
 work of [digvesh-lab](https://github.com/digvesh-lab).
 
 The files in `skills/work-flow/borrowed/` are copies from
