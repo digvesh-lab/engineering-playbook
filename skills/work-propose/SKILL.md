@@ -55,6 +55,7 @@ later. Wait for a clear decision.
 Switch: `propose`.
 
 - `propose:auto`: pass only if:
+  - `risk` in the state file is `low`
   - the recommended option is Aligned
   - it adds no dependency and does not change a public API, a schema, or a
     config format, unless the task asks for that

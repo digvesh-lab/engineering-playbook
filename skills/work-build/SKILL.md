@@ -14,10 +14,11 @@ approved solution in the state file.
    are a hard stop. Never stash or discard them unless the user says so.
 2. Run `git fetch`.
 3. Name the branch with the form from Git standards in `work-flow`. The
-   default is `<type>/<slug>`.
-   On manual (`build.branch`), ask: "Create branch `<type>/<slug>` from `<base>`?"
+   default is `<prefix>/<slug>`. The prefix is the one for the task type in
+   `reference/task-types.md`: `feat`, not `feature`; `fix`, not `bug`.
+   On manual (`build.branch`), ask: "Create branch `<prefix>/<slug>` from `<base>`?"
    On auto, create it and tell the user the name. If the name exists, add `-2`.
-4. Run `git switch -c <type>/<short-slug> origin/<base>`. Record the branch.
+4. Run `git switch -c <prefix>/<short-slug> origin/<base>`. Record the branch.
 5. **Baseline**: run the checks before any change. Record the results
    (see The checks in `work-flow`).
 6. For a bug: confirm that it still reproduces on this branch. If it does

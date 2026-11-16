@@ -109,8 +109,8 @@ Auto removes the question. Auto does not remove the work. These continue to
 apply on `full-auto`:
 
 - **Auto conditions.** For example, a solution is taken with no question
-  only if it fits the current design, is not large, and changes no schema,
-  public API, or dependency.
+  only if the risk is low, it fits the current design, is not large, and
+  changes no schema, public API, or dependency.
 - **Hard stops.** A write to production, a secret, a destructive data
   change, a force-push, a merge, or a file outside the approved scope always
   stops the run and asks.
