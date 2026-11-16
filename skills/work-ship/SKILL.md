@@ -56,6 +56,9 @@ Ask: "Open a pull request for this work?"
 Switch: `ship.pr`. On auto, pass only if the push succeeded.
 
 - If a PR for this branch exists, update it. Do not open a second PR.
+- Write the body to a file outside the repository and pass it with
+  `--body-file`. Do not put the body in the command line: Markdown
+  backticks in a shell string run as commands.
 - Title and body: the form from Git standards in `work-flow`. The content
   is the task and its reference, the findings, the approved solution, the
   test results table, the scores, how to undo the change, and the open
