@@ -40,9 +40,11 @@ These belong to the project. Keep them in the repository and commit them with th
 | glossary | each domain term and its one meaning | `work-grill` |
 | decision record | a design decision, its reason, the rejected options | `work-propose` |
 
-- Location: the `docs:` block in the instruction file. If there is none, use a
-  glossary that exists (`GLOSSARY.md` or `CONTEXT.md`). If none exists, ask
-  the user one time and record the answer in `project.md`.
+- Location: the `docs:` block in the instruction file. If there is none, use
+  what exists: `docs/glossary.md` and `docs/decisions/`, or `GLOSSARY.md`,
+  or `CONTEXT.md`. If none exists, use `docs/glossary.md` and
+  `docs/decisions/` (the layout of the `project-docs` skill), tell the user
+  one time, and record it in `project.md`.
 - Recall reads the glossary and the decision records that apply to the task.
 - Use the glossary terms in each message and in the code.
 - Do not rewrite a decision record. A new decision gets a new record that names the old record.
