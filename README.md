@@ -53,6 +53,19 @@ For Codex, the installer copies the subagent files, because Codex does not
 start a subagent whose definition is a symlink. Run `install.sh --agent
 codex` again after an update.
 
+No model name is kept in this repository, because model names change and
+are withdrawn. On Claude Code the subagents use family aliases, which
+follow new releases. On Codex each subagent uses the model of the session,
+unless you name one at install time:
+
+```bash
+./install.sh --agent codex --fast-model <cheap model> --strong-model <strong model>
+```
+
+`--fast-model` is for the scout, which only reads and summarises.
+`--strong-model` is for the architect and the reviewer. When a model is
+withdrawn, run the command again with the new name.
+
 ## work-flow
 
 ```
