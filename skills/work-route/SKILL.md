@@ -34,7 +34,10 @@ The rules use tier names. No rule names a model.
 Do not use your own knowledge of model names. It can be out of date.
 
 1. State the model of this session. If you do not know it, say "unknown".
-2. Read the configuration and keep what you find:
+2. Read the configuration and keep what you find. A host settings file can
+   hold secrets (tokens, keys, server credentials). Never print or read a
+   whole settings file. Search it for the model keys only, for example
+   `grep -nE '^(model|model_reasoning_effort)\b' <file>`:
    - the `models:` map in the instruction file
    - the host's own model settings and environment variables (the table in
      `reference/hosts.md` (in the `work-route` skill folder) says where they are for each host)

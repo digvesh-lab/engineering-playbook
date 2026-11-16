@@ -19,12 +19,17 @@ memory give no map.
 | Host | fast | standard | strong |
 | ---- | ---- | -------- | ------ |
 | Claude Code | `haiku` | `sonnet` | `opus` |
-| Codex | `gpt-6-luna` | the model of the session | the model of the session |
 | a different host | the model of the session | the model of the session | the model of the session |
 
-On Claude Code, each alias is the current model of that family.
+On Claude Code, each alias is the current model of that family, so the map
+does not go out of date. For other hosts this file names no model, because
+model names change and are withdrawn. Take the names from the `models:` map
+in the instruction file, from the subagent definitions, or from the user.
 
 ## Where to find the model settings
+
+These files can hold secrets. Read only the keys named here, with a search
+for those keys. Never print a whole file.
 
 - Claude Code: `model`, `availableModels`, and `env` in
   `.claude/settings.local.json`, `.claude/settings.json`, and
