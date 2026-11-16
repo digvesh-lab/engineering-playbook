@@ -1,6 +1,6 @@
 # Branch model
 
-Part of `engineering-standards`. Read this when the user asks which branch
+Part of `git-standards`. Read this when the user asks which branch
 model to use, or asks to retire a long-lived branch.
 
 ## Default: GitHub Flow

@@ -22,7 +22,7 @@ before the issue that it blocks. Record each issue in the state file under
 ## The form of an issue
 
 If the repository has an issue template or a written issue format, use it.
-If it does not, and the `engineering-standards` skill is installed, use its
+If it does not, and the `git-standards` skill is installed, use its
 issue form and add the "Acceptance criteria" section below. If neither
 exists, use this form.
 

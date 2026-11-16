@@ -1,9 +1,9 @@
 ---
-name: engineering-standards
+name: git-standards
 description: Default conventions for git branches, commit messages, pull requests, and issues, with one grammar for all four. Use before you create a branch, write a commit, open a pull request, or file an issue, and when the user asks to standardize one of these in a repository.
 ---
 
-# Engineering standards
+# Git standards
 
 Defaults for a repository that has no convention of its own.
 

@@ -8,7 +8,7 @@ format.
 | Part | What it is | Where |
 | ---- | ---------- | ----- |
 | work-flow | a chain of skills that takes a coding task from assessment to a pull request | `skills/work-*` |
-| engineering-standards | default conventions for branches, commits, pull requests, and issues | `skills/engineering-standards` |
+| git-standards | default conventions for branches, commits, pull requests, and issues | `skills/git-standards` |
 | subagents | 4 role definitions that work-flow uses when the agent supports them | `adapters/<agent>/agents/` |
 | repo wiki | a template and scripts for a `docs/project/` wiki with a typed graph | repository root |
 
@@ -39,7 +39,7 @@ cd engineering-playbook
 | `codex` | `~/.agents/skills/` | `~/.codex/agents/` |
 | `kiro` | `~/.kiro/skills/` | not installed |
 
-Install all the `work-*` skills together. `engineering-standards` works alone. Each step skill reads the
+Install all the `work-*` skills together. `git-standards` works alone. Each step skill reads the
 contract and the reference files in `work-flow`.
 
 **Without subagents** the flow runs in one thread. It has no model routing
@@ -78,7 +78,7 @@ The task is an issue number or URL, pasted text, or a sentence.
 | 11 | ship | `work-ship` | the report, the push, the pull request |
 | 12 | remember | `work-memory` | records notes for later runs |
 
-`engineering-standards` is a separate skill: the default conventions for
+`git-standards` is a separate skill: the default conventions for
 branches, commits, pull requests, and issues, with one grammar for all four.
 It applies only where a repository has no convention of its own.
 
@@ -220,7 +220,7 @@ MIT. See `LICENSE`. You can use, change, and share this work. Each copy, or
 substantial part of it, must keep the copyright notice and the licence text.
 
 The work-flow contract, the step skills, `work-route`, `work-retro`, the
-subagent definitions, `engineering-standards`, and the wiki tooling are the
+subagent definitions, `git-standards`, and the wiki tooling are the
 work of [digvesh-lab](https://github.com/digvesh-lab).
 
 The files in `skills/work-flow/borrowed/` are copies from

@@ -1,6 +1,6 @@
 # Templates
 
-Part of `engineering-standards`. Copy a template, fill it, and delete each
+Part of `git-standards`. Copy a template, fill it, and delete each
 line that does not apply.
 
 ## Commit
