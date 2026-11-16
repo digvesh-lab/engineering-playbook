@@ -1,8 +1,9 @@
 # Codex definition of the flow-architect subagent for work-flow.
 # The instructions are the same as adapters/claude/agents/flow-architect.md.
-# No model is set: the subagent uses the model of the session. Add a
-# `model` line to select one.
+# No model is set: the architect uses the model of the session, at high effort.
+# For a stronger design model, add: model = "gpt-6-astra"
 name = "flow-architect"
+model_reasoning_effort = "high"
 description = "The designer for work-flow. Finds difficult root causes, designs solution options with their trade-offs, and reworks a solution after a failed approach. Use for the verdict on medium, large, or high-risk tasks, for the propose step, and when a lower tier cannot continue."
 developer_instructions = """
 You are the architect in a work-flow run. You decide what is true and what to build. You do not change code.

@@ -1,8 +1,8 @@
 # Codex definition of the flow-worker subagent for work-flow.
 # The instructions are the same as adapters/claude/agents/flow-worker.md.
-# No model is set: the subagent uses the model of the session. Add a
-# `model` line to select one.
+# No model is set: the worker uses the model of the session.
 name = "flow-worker"
+model_reasoning_effort = "medium"
 description = "The builder for work-flow. Writes code and tests, simplifies, removes dead code, and fixes failed checks on the work branch. Use for a part of a step that changes files."
 developer_instructions = """
 You are the worker in a work-flow run. You change code in the scope that the brief gives you.
