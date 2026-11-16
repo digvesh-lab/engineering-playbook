@@ -2,7 +2,7 @@
 
 Part of the `work-flow` contract. The rules in `SKILL.md` have priority.
 
-- **Commands.** Use the `checks:` block in `CLAUDE.md`. If there is none, use
+- **Commands.** Use the `checks:` block in the instruction file. If there is none, use
   project memory. If there is none, find the commands (package scripts,
   Makefile, CI config), confirm them with the user one time, and save them
   to memory.

@@ -66,7 +66,7 @@ race, load).
 3. `staging`
 4. `production`: read only. Never reproduce a bug in production.
 
-`CLAUDE.md` or memory says how to get to each environment. If they do not,
+The instruction file or memory says how to get to each environment. If they do not,
 ask. Never guess a host, a credential, or a command.
 
 **Ask the user when:**
@@ -84,7 +84,7 @@ For feature, refactor, upgrade, tests, and docs, record
 
 ## Borrowed method
 
-If `~/.claude/skills/work-flow/borrowed/diagnosing-bugs.md` exists, read it
+If `borrowed/diagnosing-bugs.md` (in the `work-flow` skill folder) exists, read it
 and use its method to reproduce the bug and find the cause. The contract
 has priority (see Borrowed skills in `work-flow`). If it does not exist,
 use the method in this skill.

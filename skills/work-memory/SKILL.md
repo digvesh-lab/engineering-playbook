@@ -9,7 +9,7 @@ Obeys the contract in `work-flow`.
 
 ## Files
 
-Folder: `.claude/work-memory/`
+Folder: `.agents/work-flow/memory/`
 
 | File | Holds | Cap |
 | ---- | ----- | --- |
@@ -17,16 +17,19 @@ Folder: `.claude/work-memory/`
 | `preferences.md` | how the user likes to work, in the user's words | 30 lines |
 | `lessons.md` | a mistake, its cause, and the rule for next time | 60 entries |
 | `decisions.md` | 1 line for each decision record (date, title, path); full text only for small decisions | 60 entries |
-| `index.md` | 1 line for each run: date, slug, type, areas, outcome, branch or PR, summary | 100 runs |
+| `index.md` | 1 line for each run: date, slug, type, areas, outcome, branch or PR, summary, counts | 100 runs |
 | `areas/<area>.md` | how one part of the code works: explanation, flowchart, last 3 scores, gotchas, files, commit | 80 lines each |
 | `archive/` | entries that consolidation removed | no cap; never read on recall |
 
 - One fact on each line. Each entry has a date.
 - An entry about code has the commit hash at which it was true.
 - An entry in `lessons.md` or `decisions.md` has `uses: <n>` and `last-used: <date>`.
-- Default: memory is local. Add `.claude/work-memory/` to `.git/info/exclude`.
-- If `CLAUDE.md` says `work-memory: shared`, commit memory in its own commit
-  (`chore: update work memory`).
+- Default: memory is local. Add `.agents/work-flow/memory/` to `.git/info/exclude`.
+- Earlier versions used `.claude/work-memory/`. If that folder exists and
+  the new folder does not, tell the user and move it after a yes.
+- If the instruction file says `work-memory: shared`, commit memory in its own commit
+  (`chore: update work memory`). If `.gitignore` ignores the folder, tell
+  the user. Do not force the add.
 
 ## Glossary and decision records
 
@@ -37,7 +40,7 @@ These belong to the project. Keep them in the repository and commit them with th
 | glossary | each domain term and its one meaning | `work-grill` |
 | decision record | a design decision, its reason, the rejected options | `work-propose` |
 
-- Location: the `docs:` block in `CLAUDE.md`. If there is none, use a
+- Location: the `docs:` block in the instruction file. If there is none, use a
   glossary that exists (`GLOSSARY.md` or `CONTEXT.md`). If none exists, ask
   the user one time and record the answer in `project.md`.
 - Recall reads the glossary and the decision records that apply to the task.
@@ -96,7 +99,7 @@ and set `last-used`. A note that you read but did not use is not a use.
 2. Remove notes that were `stale` or `unverified` for more than 90 days.
 3. Merge lessons with the same cause into 1 rule. Add their `uses`.
 4. Move a lesson that is now a fixed project rule to `project.md`, or
-   suggest it for `CLAUDE.md`.
+   suggest it for the instruction file.
 5. If a file is still over its cap, remove the entries with the lowest
    `uses` and the oldest `last-used` first.
 6. Move index lines older than the last 100 runs to `archive/index-<year>.md`.
@@ -151,7 +154,9 @@ Do this after `work-ship`. Do it also when a run stops or aborts.
 
 Write draft entries from the state file:
 
-- `index.md`: 1 line for this run.
+- `index.md`: 1 line for this run. End the line with the counts that
+  `work-retro` reads: `pf=<process failures> tries=<fix attempts>
+  rounds=<review rounds> dis=<disagreements> asked=<questions on auto steps>`.
 - `areas/<area>.md`: the updated explanation, the new score, new gotchas.
 - `decisions.md`: the pointer to each decision record.
 - `lessons.md`: only lessons with a cause and a rule. Sources: each failed

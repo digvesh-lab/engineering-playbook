@@ -12,7 +12,7 @@ Part of the `work-flow` contract. The rules in `SKILL.md` have priority.
 No switch permits these: a write to production, a change to production
 data, or a reproduction of a bug in production. No preset sets an `env:` switch.
 
-`CLAUDE.md` says how to get to each environment and how to run the checks:
+The instruction file says how to get to each environment and how to run the checks:
 
 ```
 environments:

@@ -35,30 +35,31 @@ Do not use your own knowledge of model names. It can be out of date.
 
 1. State the model of this session. If you do not know it, say "unknown".
 2. Read the configuration and keep what you find:
-   - the `models:` map in `CLAUDE.md`
-   - `model`, `availableModels`, and `env` in `.claude/settings.local.json`,
-     `.claude/settings.json`, and `~/.claude/settings.json`
-   - `ANTHROPIC_MODEL`, `ANTHROPIC_DEFAULT_*_MODEL`, `CLAUDE_CODE_SUBAGENT_MODEL`
-   - the `model:` line of each `flow-` subagent
+   - the `models:` map in the instruction file
+   - the host's own model settings and environment variables (the table in
+     `reference/hosts.md` says where they are for each host)
+   - the model line of each `flow-` subagent definition
    - the model map in `project.md`, with its date
-3. Default map: `fast: haiku`, `standard: sonnet`, `strong: opus`. The host
-   changes each alias to the current model of that family.
+3. If nothing gives a map, use the default map of the host from
+   `reference/hosts.md`. If the host is not in the file, all tiers are the
+   model of this session, and routing by model is not active.
 4. A session cannot list the models of the account. If the map is not clear,
-   or the memory entry is older than 30 days, ask one time: "Run `/model`
-   and tell me which models it lists." Save the answer with the date.
-5. Show the map in 1 line: `models: fast=haiku · standard=sonnet · strong=opus · top=none`.
+   or the memory entry is older than 30 days, ask one time: "Which models
+   can this account use? Tell me the fast, the standard, and the strong
+   one." Save the answer with the date.
+5. Show the map in 1 line: `models: fast=<model> · standard=<model> · strong=<model> · top=none`.
 6. If a subagent call fails because a model is not available: remove the
    model from the map and tell the user. Use the next tier up. If there is
    none, use the next tier down, say that the quality floor is lower, and
    ask whether to continue. Record the result in memory.
 
-A `models:` map in `CLAUDE.md` has priority over steps 2 to 5:
+A `models:` map in the instruction file has priority over steps 2 to 5:
 
 ```
 models:
-  fast: haiku
-  standard: sonnet
-  strong: opus
+  fast: <alias or model id>
+  standard: <alias or model id>
+  strong: <alias or model id>
   top: <alias or model id; optional>
 ```
 
@@ -68,7 +69,8 @@ The main thread is the orchestrator. It reads the returns, decides whether
 an auto step passes, decides when to escalate, and applies Honesty. A
 stronger main model makes these decisions better and costs more on each turn.
 
-You cannot change the main model. Only the user can, with `/model`.
+You cannot change the main model. Only the user can, with the host's
+model command (see `reference/hosts.md`).
 Recommend one time at the start:
 
 | Situation | Recommended main model |
@@ -83,8 +85,8 @@ Recommend one time at the start:
 Use this form. Recommend up and down:
 
 > You run on `<model>`. For this task I recommend `<model>`, because `<reason>`.
-> The cost is `<higher | lower>` token use on each turn. Switch with
-> `/model <alias>`, or reply `continue`.
+> The cost is `<higher | lower>` token use on each turn. Switch the model
+> with `<the host's model command>`, or reply `continue`.
 
 - Give the reason from this task: size, risk, and the number of auto steps.
 - If the current model is correct, say nothing.
@@ -226,8 +228,8 @@ go up because a task feels important. Do not stay on a tier that fails.
 ```
 Role: <flow-scout | flow-worker | flow-architect | flow-reviewer>
 Step: <step>, part: <part>
-Read first: ~/.claude/skills/<step skill>/SKILL.md, section <name>
-State file: .claude/flow/<slug>.md, sections: <list>
+Read first: <absolute path of the step skill file>, section <name>
+State file: .agents/work-flow/runs/<slug>.md, sections: <list>
 Job: <one job, as an instruction>
 Scope: <files it can read; files it can change>
 Do not: commit, push, ask the user, change switches, go out of the scope
@@ -237,6 +239,9 @@ Return: <the fields>, maximum 200 words, with file:line references.
         If a decision is necessary, return `needs-decision` and the question.
 ```
 
+The orchestrator knows the path of each skill file that it loaded. Put that
+path in the brief. A subagent does not know where the skills are installed.
+
 Rules for each subagent:
 
 - It does not ask the user. It does not pass a step. Only the orchestrator does.
@@ -245,14 +250,30 @@ Rules for each subagent:
 
 ## No subagents
 
-Some hosts do not run subagents, or do not let a subagent use its own model.
+Some hosts do not run subagents, or do not let a subagent use its own
+model. The `flow-` subagent definitions can also be missing: an installer
+that installs only skills does not install them.
 
-1. Say one time: "Model routing is not active in this session."
-2. Do the steps in the main thread.
-3. Before each step, name the tier from the table: "Next step: propose.
-   Recommended model: `<model>`. Switch with `/model <alias>` and reply
-   `continue`, or reply `continue`." If the current model is correct, say nothing.
-4. Obey each token rule that does not need a subagent.
+1. Say one time, at the start of the run:
+
+   > This session has no `flow-` subagents. The run continues in one
+   > thread. Two things are weaker: no model routing, and no independent
+   > review. Recommendation: for `small`, `low` risk work, continue. For
+   > `medium` or `large` work, or `high` risk work, install the subagents
+   > (`install.sh --agent <host>` in the playbook repository) or use a host
+   > that has subagents. If you continue here, the review step asks for a
+   > new thread.
+
+2. Record `routing: not active (<reason>)` in the state file.
+3. Do the steps in the main thread.
+4. Before each step, name the tier from the table: "Next step: propose.
+   Recommended model: `<model>`. Switch the model and reply `continue`, or
+   reply `continue`." If the current model is correct, say nothing.
+5. The review follows "Who reviews" in `work-review`: in the same thread
+   only for `small`, `low` risk work; in a new thread for other work.
+6. `ship` on auto opens a draft PR when the review was not independent (see
+   `work-ship`).
+7. Obey each token rule that does not need a subagent.
 
 ## Records
 
@@ -260,7 +281,8 @@ Some hosts do not run subagents, or do not let a subagent use its own model.
   calls, and each tier change with its signal. Work done inline gets a
   line too: `inline (<reason>)`. A step does not pass while its routing
   line is missing.
-- `work-ship` report: a table of the same. Exact token numbers are in `/usage`.
+- `work-ship` report: a table of the same. Exact token numbers are in the
+  host's usage report.
 - `lessons.md`: where a tier failed or was more than necessary, by area and
   task type. Memory can raise a start tier freely. It can lower one only
   after 2 runs that succeeded on the lower tier.

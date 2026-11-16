@@ -39,7 +39,7 @@ user approves a solution.
 8. For a `large` option, say whether it can be split. If
    `borrowed/to-tickets.md` exists in the `work-flow` folder, use its method
    for the split. Write the pieces and what blocks what to the state file.
-   Do not publish tickets to an issue tracker unless the user asks.
+   Publish nothing in this part.
 9. Write all the options to the state file.
 
 ## End of step
@@ -75,6 +75,20 @@ plan, and its `size`.
 - If the approved option changes the design, or you rejected an option for a
   reason that will stay important, write a decision record (see
   `work-memory`).
+
+## Tickets
+
+Do this after a solution is approved. Read `reference/tickets.md` in the
+`work-flow` skill folder and follow it.
+
+Ask: "Create a GitHub issue for this work?"
+
+Switch: `tickets`. On auto, pass only if each auto condition in
+`reference/tickets.md` is met. `tickets:skip` creates no issue.
+
+If the approved solution is split into pieces, this run builds only the
+first piece that nothing blocks. Make the file list of that piece the scope.
+Tell the user which pieces stay open.
 
 ## Next
 

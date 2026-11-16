@@ -10,7 +10,10 @@ Part of the `work-flow` contract. The rules in `SKILL.md` have priority.
 | `manual` | all manual |
 | `guided` | `recall`, `assess`, `explain`, `build.branch`, `remember` auto; the others manual |
 | `auto` | all auto, but not `ship` |
-| `full-auto` | all auto |
+| `full-auto` | all auto, with `tickets` |
+
+`tickets` is manual in `default`, `manual`, and `guided`. It is auto in
+`auto` and `full-auto`. `tickets:skip` creates no issue.
 
 No preset sets an `env:` switch or `propose:auto(upgrade)`.
 
@@ -34,7 +37,7 @@ A limit makes an auto switch narrower. Outside the limit, the step is manual.
 ## Priority, lowest to highest
 
 1. the defaults in this file
-2. the `work-flow-defaults:` line in `CLAUDE.md`
+2. the `work-flow-defaults:` line in the instruction file
 3. the preset in the user's message
 4. single switches in the user's message
 5. what the user says later in the run
@@ -47,6 +50,8 @@ A limit makes an auto switch narrower. Outside the limit, the step is manual.
 - `/work-flow 123 full-auto propose:manual`: auto, but the user selects the solution.
 - `/work-flow "bump eslint to v10" auto ship.push:auto tries=5`
 - `/work-flow 123 guided env:staging env:prod`: can read staging and production logs.
+- `work-flow-defaults: full-auto` in the instruction file: each run is
+  `full-auto` unless the user's message says a different preset.
 
 ## What the user can answer at a question
 

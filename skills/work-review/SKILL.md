@@ -21,12 +21,21 @@ tier than the builder. Give it only:
 
 Do not give it the build conversation or the phase log.
 
-If no subagent is available, review in this thread from the git diff only.
-Say in the report that the review was not independent.
+If no subagent is available:
+
+- `small` size and `low` risk: review in this thread from the git diff
+  only. Record `review-independent: no`. Say so in the report.
+- `medium` or `large` size, or `high` risk: do not review in the thread
+  that built the code. Tell the user: "This change needs an independent
+  review. Start a new thread and run `/work-flow resume <slug>`." A review
+  in a new thread reads only the state file sections and the diff that a
+  reviewer gets. Record `review-independent: yes (new thread)`.
+
+With a subagent, record `review-independent: yes (subagent)`.
 
 ## Borrowed method
 
-If `~/.claude/skills/work-flow/borrowed/code-review.md` exists, use its
+If `borrowed/code-review.md` (in the `work-flow` skill folder) exists, use its
 method. The contract has priority (see Borrowed skills in `work-flow`). If
 it does not exist, use the method in this skill.
 
@@ -120,7 +129,8 @@ Switch: `review`. On auto, pass only if:
 - the verdict is `pass`
 - each `should-fix` is fixed or is under "Open items" with a reason
 - no score went down
-- the review was independent; a review in the same thread makes this step ask
+- `review-independent` is `yes`; a review in the thread that built the code
+  makes this step ask
 
 ## Next
 

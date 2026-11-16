@@ -18,7 +18,8 @@ not verified, and what did not reach the goal. If there is nothing, say so.
 4. The number of fix attempts and review rounds, and the subject of each loop.
 5. Each step and how it passed: by the user, or on auto and for what reason.
 6. The routing table: for each step part, the subagent, the tier, the calls,
-   and each tier change. Exact token numbers are in `/usage`.
+   and each tier change. For exact token numbers, name the host's usage
+   command if you know it.
 7. Disagreements: each choice that the user made against the
    recommendation, and what the review found about it.
 8. Process failures: the count, and the step and the event for each. If
@@ -57,9 +58,18 @@ Switch: `ship.pr`. On auto, pass only if the push succeeded.
 - If a PR for this branch exists, update it. Do not open a second PR.
 - Body: the task and its reference, the findings, the approved solution, the
   test results table, the scores, how to undo the change, and the open items.
-- If a step passed on auto, open the PR as a draft.
+- If the state file has an issue for this run, put `Fixes #<n>` in the
+  body. Do not close a parent issue that has open pieces (see
+  `reference/tickets.md` in `work-flow`).
+- Ready or draft. Open the PR as ready for review only if all of these are true:
+  - `risk` in the state file is `low`
+  - `review-independent` in the state file is `yes`
+  - no test result is `unverified`, and no `should-fix` finding is open
 
-Never merge. Only the user merges.
+  If one is not true, open the PR as a draft. Say which condition was not
+  met, in the PR body and in the report. On manual, the user decides.
+
+Never merge. Never switch on auto-merge. Only the user merges.
 
 ## Feedback on a shipped change
 

@@ -12,12 +12,12 @@ This step finds the difference between what the user said and what the user mean
 
 ## Method
 
-Read the borrowed files in `~/.claude/skills/work-flow/borrowed/` that exist:
+Read the borrowed files in the `borrowed/` folder of the `work-flow` skill that exist:
 
 - `grilling.md`: the method for the interview.
 - `domain-modeling.md`: the method for the glossary and the decision records.
 - `to-spec.md`: the form of the spec. Write the spec to the state file. Do
-  not publish it to an issue tracker unless the user asks.
+  not publish it. Only the `tickets` switch publishes, in `work-propose`.
 
 The contract has priority (see Borrowed skills in `work-flow`).
 

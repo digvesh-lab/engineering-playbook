@@ -9,7 +9,8 @@ in `borrowed/`. `borrowed/LOCK.md` lists them and their source commit.
 | ---- | ------------- | -------- |
 | work-assess | `diagnosing-bugs.md` | the reproduction and the search for a cause |
 | work-grill | `grilling.md`, `domain-modeling.md`, `to-spec.md` | the interview, the glossary and decision records, the spec |
-| work-propose | `to-tickets.md` | the split of large work |
+| work-propose | `to-tickets.md` | the split of large work and the form of a ticket |
+| work-retro | `retro.md` | the categories of improvement |
 | work-build | `tdd.md` | the test-first loop |
 | work-review | `code-review.md` | the review |
 
@@ -25,7 +26,10 @@ Rules:
   the dependency is missing.
 - If a borrowed file says to publish to an issue tracker, add labels, or run
   `/setup-matt-pocock-skills`: do not. Write the spec, the tickets, and the
-  findings to the state file. Publish only if the user asks.
+  findings to the state file. The `tickets` switch is the only path to the
+  issue tracker. It publishes at the end of `work-propose`, after a
+  solution is approved, with the rules in `tickets.md`. A spec or a ticket
+  is never published during `work-grill`.
 - If a borrowed file says to write ticket files under `.scratch/`: do not.
   Write the tickets to the state file.
 - If a borrowed file says to write `GLOSSARY.md` or a decision record
@@ -43,6 +47,7 @@ Rules:
   record it. If they give no answer, ask.
 - If a borrowed file says to start subagents: only the orchestrator starts
   them. Use the `flow-` subagents and the tiers from `work-route`.
-- If a borrowed file is not there, the step uses its own method.
+- If a borrowed file is not there, the step uses its own method. Say so in
+  1 line and record it in the state file.
 - Do not edit a borrowed file. Only `/work-borrow-update` changes it. Only
   the user starts that skill.

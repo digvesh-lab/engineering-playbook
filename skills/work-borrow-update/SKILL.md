@@ -7,7 +7,7 @@ disable-model-invocation: true
 # Update the borrowed skills
 
 `work-flow` borrows methods from https://github.com/mattpocock/skills. The
-copies are in `~/.claude/skills/work-flow/borrowed/`. `LOCK.md` in that
+copies are in the `borrowed/` folder of the `work-flow` skill. `LOCK.md` in that
 folder lists each skill, the step that uses it, and its source commit.
 
 Usage: `/work-borrow-update [check | <skill> | add <skill> | remove <skill>]`
@@ -72,7 +72,7 @@ Usage: `/work-borrow-update [check | <skill> | add <skill> | remove <skill>]`
 ## The official installer
 
 `npx skills add https://github.com/mattpocock/skills --skill <name>`
-installs a skill as a separate skill in `.claude/skills/`. Do not use it for
+installs a skill as a separate skill in the host's skills folder. Do not use it for
 the borrowed copies. A separate skill can start outside the workflow and
 does not obey the contract. Tell the user about it only if the user wants
 one of these skills to work alone.

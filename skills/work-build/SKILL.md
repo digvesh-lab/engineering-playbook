@@ -42,7 +42,7 @@ When a loop comes back to this step, go to "Do" on the existing branch.
 
 ## Borrowed method
 
-If `~/.claude/skills/work-flow/borrowed/tdd.md` exists, read it and use its
+If `borrowed/tdd.md` (in the `work-flow` skill folder) exists, read it and use its
 method for the test-first loop. The contract has priority (see Borrowed
 skills in `work-flow`). If it does not exist, use the method in this skill.
 
