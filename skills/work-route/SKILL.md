@@ -37,7 +37,7 @@ Do not use your own knowledge of model names. It can be out of date.
 2. Read the configuration and keep what you find:
    - the `models:` map in the instruction file
    - the host's own model settings and environment variables (the table in
-     `reference/hosts.md` says where they are for each host)
+     `reference/hosts.md` (in the `work-route` skill folder) says where they are for each host)
    - the model line of each `flow-` subagent definition
    - the model map in `project.md`, with its date
 3. If nothing gives a map, use the default map of the host from

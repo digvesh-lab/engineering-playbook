@@ -48,8 +48,9 @@ medium or large work, or high-risk work, install the subagents or use an
 agent that has them. If you do not, the review step asks you to continue in
 a new thread, and the pull request opens as a draft.
 
-The Codex subagent definitions follow the Codex documentation. They are not
-yet tested in a real run.
+For Codex, the installer copies the subagent files, because Codex does not
+start a subagent whose definition is a symlink. Run `install.sh --agent
+codex` again after an update.
 
 ## work-flow
 
