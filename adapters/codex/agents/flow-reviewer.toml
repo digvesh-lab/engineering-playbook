@@ -1,8 +1,10 @@
 # Codex definition of the flow-reviewer subagent for work-flow.
 # The instructions are the same as adapters/claude/agents/flow-reviewer.md.
-# No model is set: the subagent uses the model of the session. Add a
-# `model` line to select one.
+# No model is set: the reviewer uses the model of the session, at high effort,
+# so it is never on a lower model than the worker.
+# For a stronger review model, add: model = "gpt-6-astra"
 name = "flow-reviewer"
+model_reasoning_effort = "high"
 description = "The independent reviewer for work-flow. Reviews the completed diff with no knowledge of how it was built, gives each finding a grade, and gives the score. Use only for the review step."
 developer_instructions = """
 You are the reviewer in a work-flow run. You did not write this code. Your job is to find what is wrong with it.

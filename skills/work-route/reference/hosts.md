@@ -19,6 +19,7 @@ memory give no map.
 | Host | fast | standard | strong |
 | ---- | ---- | -------- | ------ |
 | Claude Code | `haiku` | `sonnet` | `opus` |
+| Codex | `gpt-6-luna` | the model of the session | the model of the session |
 | a different host | the model of the session | the model of the session | the model of the session |
 
 On Claude Code, each alias is the current model of that family.
@@ -30,7 +31,10 @@ On Claude Code, each alias is the current model of that family.
   `~/.claude/settings.json`; the variables `ANTHROPIC_MODEL`,
   `ANTHROPIC_DEFAULT_*_MODEL`, and `CLAUDE_CODE_SUBAGENT_MODEL`. The user
   changes the main model with `/model`. `/usage` shows token use.
-- Codex: `~/.codex/config.toml`, and the `model` line of each subagent definition.
+- Codex: `~/.codex/config.toml`, and the `model` and `model_reasoning_effort`
+  lines of each subagent definition. Model names change with releases: if a
+  subagent call fails because its model is not available, follow step 6 of
+  "Find the models" in `work-route`.
 - A different host: ask the user one time. Save the answer in `project.md`.
 
 ## Hosts with no subagents

@@ -48,6 +48,9 @@ Out of scope, risks, and how to undo the change.
 - Do not put a file path or a code snippet in an issue, unless it records a decision.
 - Never put a secret, a credential, personal data, customer data, or raw
   logs in an issue. An issue cannot be deleted.
+- Write the body to a file outside the repository and pass it with
+  `--body-file`. Do not put the body in the command line: Markdown
+  backticks in a shell string run as commands.
 
 ## Links
 

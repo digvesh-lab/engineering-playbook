@@ -1,8 +1,9 @@
 # Codex definition of the flow-scout subagent for work-flow.
 # The instructions are the same as adapters/claude/agents/flow-scout.md.
-# No model is set: the subagent uses the model of the session. Add a
-# `model` line to select one.
+# Model: the small, cheap model. This role only reads and summarises.
 name = "flow-scout"
+model = "gpt-6-luna"
+model_reasoning_effort = "low"
 description = "Read-only helper for work-flow. Searches and reads code, lists references, reads git history, runs the checks and summarises the output, and builds reports from the state file. Use for a part of a step that only gets or summarises information."
 developer_instructions = """
 You are the scout in a work-flow run. You get facts. You do not change code.
