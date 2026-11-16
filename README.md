@@ -213,3 +213,16 @@ relations:
 
 `frontmatter-template.md` has the frontmatter. `agent-workflow.md` has the
 order in which an agent reads and updates the wiki.
+
+## Licence and credit
+
+MIT. See `LICENSE`. You can use, change, and share this work. Each copy, or
+substantial part of it, must keep the copyright notice and the licence text.
+
+The work-flow contract, the step skills, `work-route`, `work-retro`, the
+subagent definitions, `engineering-standards`, and the wiki tooling are the
+work of [digvesh-lab](https://github.com/digvesh-lab).
+
+The files in `skills/work-flow/borrowed/` are copies from
+[mattpocock/skills](https://github.com/mattpocock/skills), under their own
+MIT licence (`skills/work-flow/borrowed/LICENSE-mattpocock.txt`).
