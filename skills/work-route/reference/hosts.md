@@ -26,6 +26,9 @@ On Claude Code, each alias is the current model of that family.
 
 ## Where to find the model settings
 
+These files can hold secrets. Read only the keys named here, with a search
+for those keys. Never print a whole file.
+
 - Claude Code: `model`, `availableModels`, and `env` in
   `.claude/settings.local.json`, `.claude/settings.json`, and
   `~/.claude/settings.json`; the variables `ANTHROPIC_MODEL`,
