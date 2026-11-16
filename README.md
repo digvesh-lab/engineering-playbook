@@ -7,7 +7,8 @@ format.
 
 | Part | What it is | Where |
 | ---- | ---------- | ----- |
-| work-flow | a chain of skills that takes a coding task from assessment to a pull request | `skills/` |
+| work-flow | a chain of skills that takes a coding task from assessment to a pull request | `skills/work-*` |
+| engineering-standards | default conventions for branches, commits, pull requests, and issues | `skills/engineering-standards` |
 | subagents | 4 role definitions that work-flow uses when the agent supports them | `adapters/<agent>/agents/` |
 | repo wiki | a template and scripts for a `docs/project/` wiki with a typed graph | repository root |
 
@@ -38,7 +39,7 @@ cd engineering-playbook
 | `codex` | `~/.agents/skills/` | `~/.codex/agents/` |
 | `kiro` | `~/.kiro/skills/` | not installed |
 
-Install all the `work-*` skills together. Each step skill reads the
+Install all the `work-*` skills together. `engineering-standards` works alone. Each step skill reads the
 contract and the reference files in `work-flow`.
 
 **Without subagents** the flow runs in one thread. It has no model routing
@@ -77,7 +78,11 @@ The task is an issue number or URL, pasted text, or a sentence.
 | 11 | ship | `work-ship` | the report, the push, the pull request |
 | 12 | remember | `work-memory` | records notes for later runs |
 
-Other skills: `work-route` (which model tier and which subagent does each
+`engineering-standards` is a separate skill: the default conventions for
+branches, commits, pull requests, and issues, with one grammar for all four.
+It applies only where a repository has no convention of its own.
+
+Other work-flow skills: `work-route` (which model tier and which subagent does each
 part), `work-retro` (finds mistakes of the workflow that repeat),
 `work-borrow-update` (updates the borrowed method files).
 

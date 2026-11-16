@@ -22,7 +22,9 @@ before the issue that it blocks. Record each issue in the state file under
 ## The form of an issue
 
 If the repository has an issue template or a written issue format, use it.
-If it does not, use this form.
+If it does not, and the `engineering-standards` skill is installed, use its
+issue form and add the "Acceptance criteria" section below. If neither
+exists, use this form.
 
 - Title: `<type>(<scope>): <description>`, the same grammar as the commit
   prefix for the task type.
