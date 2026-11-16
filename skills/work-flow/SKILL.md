@@ -79,6 +79,20 @@ Any other file is a hard stop. Name the file and the reason.
 - If a step changed nothing, make no commit.
 - Never stage the state file or local memory.
 
+## Git standards
+
+The words of a branch name, a commit message, a pull request, and an issue
+come from one place. Use the first that exists:
+
+1. the repository's own convention
+2. the `git-standards` skill, if it is installed
+3. the defaults in `reference/git-defaults.md`
+
+`git-standards` gives the form. This contract gives the content and the
+rules: the scope, the commit rules above, the hard stops, and Honesty. If
+they conflict, this contract has priority. Record in the state file which
+of the 3 the run uses.
+
 ## Where switch settings come from
 
 Only from these:
@@ -303,6 +317,7 @@ all of them at the start.
 | `reference/loops.md` | a check fails, a review blocks, or the user asks to go back |
 | `reference/borrowed-rules.md` | a step reads a file from `borrowed/` |
 | `reference/tickets.md` | the `tickets` switch is not `skip`, or a task has an issue |
+| `reference/git-defaults.md` | you name a branch, write a commit, a PR, or an issue, and neither the repository nor `git-standards` gives the form |
 | `reference/language.md` | you write the first report of a run |
 
 ## Start

@@ -13,7 +13,9 @@ approved solution in the state file.
 1. Look at the working tree. Uncommitted changes that this run did not make
    are a hard stop. Never stash or discard them unless the user says so.
 2. Run `git fetch`.
-3. On manual (`build.branch`), ask: "Create branch `<type>/<slug>` from `<base>`?"
+3. Name the branch with the form from Git standards in `work-flow`. The
+   default is `<type>/<slug>`.
+   On manual (`build.branch`), ask: "Create branch `<type>/<slug>` from `<base>`?"
    On auto, create it and tell the user the name. If the name exists, add `-2`.
 4. Run `git switch -c <type>/<short-slug> origin/<base>`. Record the branch.
 5. **Baseline**: run the checks before any change. Record the results

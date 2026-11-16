@@ -78,9 +78,12 @@ The task is an issue number or URL, pasted text, or a sentence.
 | 11 | ship | `work-ship` | the report, the push, the pull request |
 | 12 | remember | `work-memory` | records notes for later runs |
 
-`git-standards` is a separate skill: the default conventions for
-branches, commits, pull requests, and issues, with one grammar for all four.
-It applies only where a repository has no convention of its own.
+`git-standards` holds the default conventions for branches, commits, pull
+requests, and issues, with one grammar for all four. It applies only where
+a repository has no convention of its own. work-flow uses it for each
+branch, commit, pull request, and issue in a run. It also works alone. If it
+is not installed, work-flow uses the short form in
+`skills/work-flow/reference/git-defaults.md`.
 
 Other work-flow skills: `work-route` (which model tier and which subagent does each
 part), `work-retro` (finds mistakes of the workflow that repeat),

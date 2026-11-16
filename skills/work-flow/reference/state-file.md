@@ -38,6 +38,7 @@ models: {fast: , standard: , strong: , top: }
 main-model: <model of this session> (recommended: <tier>; user chose: <...>)
 routing: active | not active (<reason>)
 review-independent: yes (subagent | new thread) | no
+git-standards: repository convention | git-standards skill | defaults
 env: []
 steps:               # pending | passed (user) | passed (auto: <reason>) | redo | stopped
   recall: pending    # each passed step also records its last commit hash

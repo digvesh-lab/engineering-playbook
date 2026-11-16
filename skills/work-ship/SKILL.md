@@ -56,8 +56,11 @@ Ask: "Open a pull request for this work?"
 Switch: `ship.pr`. On auto, pass only if the push succeeded.
 
 - If a PR for this branch exists, update it. Do not open a second PR.
-- Body: the task and its reference, the findings, the approved solution, the
-  test results table, the scores, how to undo the change, and the open items.
+- Title and body: the form from Git standards in `work-flow`. The content
+  is the task and its reference, the findings, the approved solution, the
+  test results table, the scores, how to undo the change, and the open
+  items. `reference/git-defaults.md` in `work-flow` says which section
+  gets which.
 - If the state file has an issue for this run, put `Fixes #<n>` in the
   body. Do not close a parent issue that has open pieces (see
   `reference/tickets.md` in `work-flow`).

@@ -7,6 +7,9 @@ description: Default conventions for git branches, commit messages, pull request
 
 Defaults for a repository that has no convention of its own.
 
+This skill works alone. `work-flow` also uses it, when it is installed, for
+the form of each branch, commit, pull request, and issue in a run.
+
 ## Which rules apply
 
 1. Look for the repository's own convention: `CONTRIBUTING.md`, a PR or

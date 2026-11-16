@@ -13,3 +13,6 @@ Part of the `work-flow` contract. The rules in `SKILL.md` have priority.
 | docs | what is missing or wrong | the docs agree with the code | `docs` |
 
 If no type fits, use the nearest. Say which and why.
+
+The prefix is the `type` in a branch name, a commit subject, a PR title, and
+an issue title. The form of each is in Git standards in `SKILL.md`.
