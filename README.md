@@ -29,7 +29,7 @@ This installs the skills only. It does not install the subagents.
 ```bash
 git clone https://github.com/digvesh-lab/engineering-playbook
 cd engineering-playbook
-./install.sh --agent claude     # or: codex, kiro
+./install.sh --agent claude     # or: codex, kiro, agy
 ./install.sh --agent claude --uninstall
 ```
 
@@ -37,6 +37,7 @@ cd engineering-playbook
 | ----- | ------------ | --------------- |
 | `claude` | `~/.claude/skills/` | `~/.claude/agents/` |
 | `codex` | `~/.agents/skills/` | `~/.codex/agents/` |
+| `agy` | `~/.agents/skills/` | `~/.gemini/config/agents/` |
 | `kiro` | `~/.kiro/skills/` | not installed |
 
 Install all the `work-*` skills together. `git-standards` and `project-docs`
@@ -49,9 +50,10 @@ medium or large work, or high-risk work, install the subagents or use an
 agent that has them. If you do not, the review step asks you to continue in
 a new thread, and the pull request opens as a draft.
 
-For Codex, the installer copies the subagent files, because Codex does not
-start a subagent whose definition is a symlink. Run `install.sh --agent
-codex` again after an update.
+For Codex and Antigravity (`agy`), the installer copies the subagent files, because
+model names can be injected at install time (and Codex does not start a subagent
+whose definition is a symlink). Run `install.sh --agent codex` (or `agy`) again
+after an update.
 
 No model name is kept in this repository, because model names change and
 are withdrawn. On Claude Code the subagents use family aliases, which

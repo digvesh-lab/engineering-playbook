@@ -8,6 +8,7 @@ with what you see in the session, use what you see and tell the user.
 | ---- | ---------------- | -------------------- | -------------------- | ----------------------- |
 | Claude Code | `CLAUDE.md`; `AGENTS.md` only if there is no `CLAUDE.md` | `~/.claude/skills/` | `~/.claude/agents/<name>.md` | yes: `model:` in the definition |
 | Codex | `AGENTS.md` | `~/.agents/skills/` | `~/.codex/agents/<name>.toml` | yes: `model` in the definition |
+| Antigravity (`agy`) | `AGENTS.md`, and `.agents/rules/*.md` | `~/.agents/skills/` | `~/.gemini/config/agents/<name>.md` (and `.agents/agents/<name>.md` per workspace) | yes: `model:` in frontmatter, or `Model` (`flash_lite`, `flash`, `pro`, `inherit`) on `invoke_subagent` |
 | Kiro | `AGENTS.md`, and steering files in `.kiro/steering/` | `~/.kiro/skills/` | `~/.kiro/agents/` (custom agents do not load skills by default) | not verified |
 | a different host | `AGENTS.md` | see the host's documentation | see the host's documentation | not known |
 
@@ -19,6 +20,7 @@ memory give no map.
 | Host | fast | standard | strong |
 | ---- | ---- | -------- | ------ |
 | Claude Code | `haiku` | `sonnet` | `opus` |
+| Antigravity (`agy`) | `flash_lite` | `flash` | `pro` |
 | a different host | the model of the session | the model of the session | the model of the session |
 
 On Claude Code, each alias is the current model of that family, so the map
@@ -40,6 +42,9 @@ for those keys. Never print a whole file.
   lines of each subagent definition. Model names change with releases: if a
   subagent call fails because its model is not available, follow step 6 of
   "Find the models" in `work-route`.
+- Antigravity (`agy`): `agy models` lists available models; `invoke_subagent`
+  also accepts tier aliases (`flash_lite`, `flash`, `pro`, `inherit`), and
+  `~/.gemini/config/agents/<name>.md` can set `model:`.
 - A different host: ask the user one time. Save the answer in `project.md`.
 
 ## Hosts with no subagents

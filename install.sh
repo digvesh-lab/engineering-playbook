@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 # Links the skills, and installs the subagent definitions of one host, into the user's home.
 # Codex does not start a subagent whose definition is a symlink, so those files are copied.
-# Usage: install.sh [--agent claude|codex|kiro] [--fast-model NAME] [--strong-model NAME] [--uninstall]
-# --fast-model and --strong-model (codex): the model for the scout, and for the architect and
+# Usage: install.sh [--agent claude|codex|kiro|agy] [--fast-model NAME] [--strong-model NAME] [--uninstall]
+# --fast-model and --strong-model (codex, agy): the model for the scout, and for the architect and
 # reviewer. Without them each subagent uses the model of the session. No model name is kept in
 # this repository, because model names change.
 set -euo pipefail
@@ -27,7 +27,8 @@ case "$agent" in
   claude) skills_dest="${CLAUDE_HOME:-$HOME/.claude}/skills"; agents_dest="${CLAUDE_HOME:-$HOME/.claude}/agents" ;;
   codex)  skills_dest="$HOME/.agents/skills";                 agents_dest="${CODEX_HOME:-$HOME/.codex}/agents"; copy_agents=1 ;;
   kiro)   skills_dest="$HOME/.kiro/skills";                   agents_dest="" ;;
-  *) echo "unknown agent: $agent (use claude, codex, or kiro)" >&2; exit 2 ;;
+  agy)    skills_dest="$HOME/.agents/skills";                 agents_dest="${AGY_CONFIG_DIR:-$HOME/.gemini/config}/agents"; copy_agents=1 ;;
+  *) echo "unknown agent: $agent (use claude, codex, kiro, or agy)" >&2; exit 2 ;;
 esac
 
 link() { # link <source> <destination folder>
@@ -46,7 +47,7 @@ copy() { # copy <source file> <destination folder>
   local item="$1" dest
   dest="$2/$(basename "$item")"
   if [[ $uninstall -eq 1 ]]; then
-    if [[ -L "$dest" ]] || { [[ -f "$dest" ]] && cmp -s <(grep -v '^model = ' "$dest") "$item"; }; then rm "$dest"; echo "removed $dest"
+    if [[ -L "$dest" ]] || { [[ -f "$dest" ]] && cmp -s <(grep -vE '^(model = |model: )' "$dest") "$item"; }; then rm "$dest"; echo "removed $dest"
     elif [[ -e "$dest" ]]; then echo "kept    $dest (it differs from this repository)" >&2; fi
   else
     local model=""
@@ -57,7 +58,11 @@ copy() { # copy <source file> <destination folder>
     mkdir -p "$2"; rm -f "$dest"
     if [[ -n "$model" ]]; then
       if [[ ! "$model" =~ ^[A-Za-z0-9._:/-]+$ ]]; then echo "invalid model name: $model" >&2; exit 2; fi
-      awk -v m="$model" '{print} /^name = /{print "model = \"" m "\""}' "$item" > "$dest"
+      if [[ "$dest" == *.md ]]; then
+        awk -v m="$model" '{print} /^name: /{print "model: " m}' "$item" > "$dest"
+      else
+        awk -v m="$model" '{print} /^name = /{print "model = \"" m "\""}' "$item" > "$dest"
+      fi
       echo "copied  $dest (model: $model)"
     else
       cp "$item" "$dest"; echo "copied  $dest"
