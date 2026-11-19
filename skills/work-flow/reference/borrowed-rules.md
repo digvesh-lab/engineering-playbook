@@ -3,13 +3,14 @@
 Part of the `work-flow` contract. The rules in `SKILL.md` have priority.
 
 Source: https://github.com/mattpocock/skills (MIT licence). The copies are
-in `borrowed/`. `borrowed/LOCK.md` lists them and their source commit.
+in `borrowed/`. `borrowed/LOCK.md` lists them and the source commit of each.
 
 | Step | Borrowed file | Used for |
 | ---- | ------------- | -------- |
 | work-assess | `diagnosing-bugs.md` | the reproduction and the search for a cause |
 | work-grill | `grilling.md`, `domain-modeling.md`, `to-spec.md` | the interview, the glossary and decision records, the spec |
 | work-propose | `to-tickets.md` | the split of large work and the form of a ticket |
+| work-prototype | `prototype.md` (with `prototype/UI.md`, `prototype/LOGIC.md`) | the UI variants and the logic demo |
 | work-retro | `retro.md` | the categories of improvement |
 | work-build | `tdd.md` | the test-first loop |
 | work-review | `code-review.md` | the review |

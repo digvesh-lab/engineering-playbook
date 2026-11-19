@@ -104,7 +104,9 @@ is not installed, work-flow uses the short form in
 
 Other work-flow skills: `work-research` (searches outside the repository
 for prior art and design inspiration; steps 2 to 5 call it when they need
-it, switch `research`), `work-route` (which model tier and which subagent does each
+it, switch `research`), `work-prototype` (a flowchart, HTML UI variants, or a
+clickable logic demo of the options; `work-propose` calls it when the options
+differ in what the user sees, switch `prototype`), `work-route` (which model tier and which subagent does each
 part), `work-retro` (finds mistakes of the workflow that repeat),
 `work-borrow-update` (updates the borrowed method files).
 

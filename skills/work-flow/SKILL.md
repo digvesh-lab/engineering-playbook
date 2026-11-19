@@ -165,6 +165,7 @@ steps in this order. Start a step only when the previous step passed.
 | 3 | work-explain | `explain` | "Do you know this part, or do I explain it?" | write the explanation and the score to the state file |
 | 4 | work-grill | `grill` | "Are these requirements complete and correct?" | no interview if the requirements are clear |
 | - | work-research (on call) | `research` | "Use these findings?" | use the findings if each has a label and a link |
+| - | work-prototype (on call) | `prototype` | "Which variant?" | recommend a variant; the `propose` switch decides |
 | 5 | work-propose | `propose` | "Which option?" | take the recommended option |
 | 5 | work-propose (tickets) | `tickets` | "Create a GitHub issue for this work?" | create it |
 | 6 | work-build | `build` | "Create the branch?" and "Commit phase 1?" | create the branch and commit |
@@ -180,12 +181,15 @@ steps in this order. Start a step only when the previous step passed.
 - `work-research` is not a numbered step. A step from assess to propose
   calls it when a trigger in that skill applies. It searches outside the
   repository. Its default is `manual`.
+- `work-prototype` is not a numbered step. `work-propose` calls it when the
+  options differ in what the user sees. It writes only standalone files in
+  the run folder. Its default is `manual`.
 - Sub-switches: `build.branch`, `build.commit`, `ship.push`, `ship.pr`.
   `build` and `ship` set both of their sub-switches.
 
 ## Setting the switches
 
-- One step: `propose:manual`, `clean:auto`. Also `explain:skip`, `grill:skip`, and `research:skip`.
+- One step: `propose:manual`, `clean:auto`. Also `explain:skip`, `grill:skip`, `research:skip`, and `prototype:skip`.
 - Presets: `default` (`recall`, `clean`, `prune`, and `remember` auto; the others manual), `manual` (all manual), `guided`, `auto` (all auto except `ship`), `full-auto` (all auto).
 - To run with no questions on work that is low risk and not large, put
   `work-flow-defaults: full-auto` in the instruction file. The auto
