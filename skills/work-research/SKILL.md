@@ -70,8 +70,7 @@ Rules:
 
 - Check a claim against the code before you label it `evidence`: the
   version, and that the API exists.
-- 1 source is 1 source. Say how many sources agree. If sources disagree,
-  report the 2 sides.
+- Count the sources that agree. If sources disagree, report the 2 sides.
 - For code from another project, record its licence. Copy code only if the
   licence is compatible with this repository and the approved solution
   includes it. If not, describe the idea and do not copy.
@@ -99,22 +98,15 @@ Switch: `research`.
 
 - On manual: show the findings and ask "Use these findings?"
 - On auto, continue only if each condition is met:
-  - the question and the number of queries are recorded
+  - you recorded the question and the number of queries
   - each finding has a label and a link
   - no query contained private information
   - the budget is not exceeded
 - `research:skip`: do not search outside. Where a trigger applied, record
   "research skipped" in the state file.
 
-If the budget is used up and there is no answer, say so. Search again only
+If no searches are left and there is no answer, say so. Search again only
 after the user says yes.
-
-## Routing
-
-The gathering (search, read, summarise) goes to a subagent that has web
-tools, on the `fast` tier. If no subagent has web tools, do it in the main
-thread. The labels and the answer are on the `standard` tier or the main
-thread. A `fast` result is never the only evidence for a verdict.
 
 ## Next
 
