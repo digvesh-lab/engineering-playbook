@@ -9,9 +9,25 @@ Part of the `work-flow` contract. The rules in `SKILL.md` have priority.
   `.claude/work-memory/`. If an old folder exists and the new folder does
   not, tell the user and move it after a yes. Do not read the two locations.
 - Each skill reads the state file first.
-- `resume`: read the state file. Check that the branch and the latest commit
-  agree with it. If they do not, that is a hard stop. Show the switches.
-  Continue from the first step that did not pass.
+- **Keep the `steps:` block true.** When a step ends, write its output and
+  its `steps:` line in the same edit. A step has not passed until its line
+  says so.
+- **Rewrite in place.** Put each new fact in the section that it belongs
+  to. Replace what it makes wrong. Do not add dated sections. The phase
+  log gets 1 line for each event: date, step, what happened, commit.
+- **Keep it short.** Keep the file at about 200 lines or fewer. If a section
+  gets long, keep the conclusion and its evidence references, and move the
+  rest to `<slug>.notes.md` next to it. Skills do not read the notes file
+  unless a step needs that detail.
+- **If you cannot read this file or the template here**, stop and tell the
+  user. Do not rebuild the template from memory. The usual cause: the host
+  does not permit reads of the skill folder. The fix: a read permission
+  for the skill folder and for the folder that its link points to.
+  `install.sh` prints the rules.
+- `resume`: read the state file. Check that the branch, the latest commit,
+  and the pull request agree with it. If they do not, that is a hard stop
+  (see Hard stops in `SKILL.md`). Show the switches. Continue from the first
+  step that did not pass.
 
 Template:
 
@@ -19,7 +35,7 @@ Template:
 task: <1 line>
 ref: <issue or ticket link, if any>
 issues: <each issue that this run created or uses: number, title, parent, blocked by>
-type: bug | feature | refactor | performance | upgrade | tests | docs
+type: bug | feature | refactor | performance | upgrade | tests | docs | question
 observed-in: <where the problem was seen, or "n/a">
 environment: local | dev | staging | production (read only) | code only
 needs: <data, flags, config, services necessary to reproduce>
@@ -30,7 +46,7 @@ switches: {recall: auto, assess: manual, explain: manual, grill: manual,
   clean: auto, prune: auto, review: manual, ship.push: manual,
   ship.pr: manual, remember: auto, iterate: manual, tickets: manual,
   research: manual, prototype: manual}
-switch-source: <default | instruction file at <base commit> | the user's message>
+switch-source: <default | project instruction file at <base commit> | user instruction file for all projects | the user's message>
 budgets: {tries: 3, rounds: 2}
 risk: low | high (<reason>)
 size: small | medium | large      # from work-propose; medium until then
@@ -41,7 +57,9 @@ routing: active | not active (<reason>)
 review-independent: yes (subagent | new thread) | no
 git-standards: repository convention | git-standards skill | defaults
 env: []
-steps:               # pending | passed (user) | passed (auto: <reason>) | redo | stopped
+delivery: single | stacked     # stacked: see "Stacked delivery" in reference/tickets.md
+pieces:              # stacked only: key, branch, base, PR, issue, status, tries, rounds
+steps:               # pending | passed (user) | passed (auto: <reason>) | passed (unrecorded) | redo | stopped
   recall: pending    # each passed step also records its last commit hash
   ...
 ## Recalled from memory

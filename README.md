@@ -142,10 +142,10 @@ apply on `full-auto`:
 
 | Key | Sets |
 | --- | ---- |
-| `work-flow-defaults:` | the preset and switches for each run |
+| `work-flow-defaults:` | the preset and switches for each run (also read from the user's instruction file for all projects; the project line has priority) |
 | `models:` | the model for each tier: `fast`, `standard`, `strong`, `top` |
 | `checks:` | the commands for tests, lint, type-check, and build |
-| `environments:` | how to get to local, dev, staging, and production logs |
+| `environments:` | how to get to local, dev, staging, and production logs; `data: disposable` on `local` lets a run reset local data with no question |
 | `docs:` | where the glossary and the decision records are |
 | `work-memory: shared` | commit the project memory |
 | `playbook-repo:` | the repository that gets the issues from `work-retro` |
@@ -155,8 +155,9 @@ apply on `full-auto`:
 With the `tickets` switch, `work-propose` creates GitHub issues with `gh`
 after a solution is approved: 1 issue for the work, or a parent issue with 1
 issue for each piece when a large solution is split. The pull request has
-`Fixes #<n>`. A run builds 1 piece. Each open piece is the task for a new
-run. Detail: `skills/work-flow/reference/tickets.md`.
+`Fixes #<n>` (or `Refs #<n>` when its base is not the default branch). A run
+builds 1 piece, or, with `delivery: stacked` that the user selects, each
+piece in order with 1 pull request for each. Detail: `skills/work-flow/reference/tickets.md`.
 
 ### Retro
 

@@ -178,12 +178,21 @@ A task is high risk if it touches one of these:
 
 - authentication, authorisation, sessions, secrets, cryptography
 - money: payments, billing, pricing, tax
-- data: schema changes, migrations, deletes, bulk updates
+- data: schema changes (also a new field in a running system), migrations,
+  deletes, bulk updates
 - concurrency, locks, queues, retries, caches
-- a public API, a shared library, or code with many callers
+- a public API, a shared library, or code with many callers, when the
+  change alters what a caller sends, gets, or sees
 - an area that memory marks as fragile or as the location of a repeated bug
 
-`work-assess` records `risk: low | high` and the reason. If you are not sure, record `high`.
+This is not high risk by itself. It is high risk if it also touches an
+item above:
+
+- a read, a search, or a report that changes no stored data
+
+`work-assess` records `risk: low | high` and the reason. The reason names
+the item of the list that applies, with a `file:line`. "Touches data" is
+not a reason. If you are not sure, record `high`.
 
 ## Change of tier
 
@@ -218,14 +227,14 @@ go up because a task feels important. Do not stay on a tier that fails.
 
 1. **Send a brief.** Do not send the conversation. The brief names the state-file sections to read.
 2. **The state file is the memory.** Detail goes into the state file. Keep only the summary.
-3. **Short returns.** A subagent returns a maximum of 200 words and a list of `file:line` references.
+3. **Short returns.** A subagent returns a maximum of 200 words and a list of `file:line` references, then a `detail:` block of a maximum of 600 words. The orchestrator writes the detail block to the state file and does not read it again. Only the orchestrator writes the state file.
 4. **Summarise tool output.** The scout returns failures only: test name, message, first relevant stack line.
 5. **Read narrowly.** Search first. Then read only the ranges that match.
 6. **Use memory first.** A valid area note, a known command, or a past decision replaces a new investigation.
 7. **Do small work inline.** If a part needs fewer than about 3 file reads and no long output, do it in the main thread.
 8. **Read in parallel. Write in series.** Scouts can run in parallel. Only 1 agent edits the branch at a time.
 9. **One job in one brief.**
-10. **Cheap check first.** Run the tests for the changed files, then all the checks before a commit.
+10. **Cheap check first.** Run the tests for the changed files first. Run all the checks only at the 4 points in `reference/checks.md` of `work-flow`.
 11. **New thread between steps.** On a long run, tell the user that `/work-flow resume` in a new thread keeps the context small.
 12. **Effort follows tier.** Scouts: low. Workers: medium. Architect and reviewer: high.
 
@@ -240,7 +249,8 @@ Job: <one job, as an instruction>
 Scope: <files it can read; files it can change>
 Do not: commit, push, ask the user, change switches, go out of the scope
 Return: <the fields>, maximum 200 words, with file:line references.
-        Write detail to the state file under <section>.
+        Then a `detail:` block, maximum 600 words, for <section>.
+        Do not write the state file.
         Say what is verified and what is not verified.
         If a decision is necessary, return `needs-decision` and the question.
 ```

@@ -35,7 +35,7 @@ the code of a run. `work-review` does that.
 ## Read
 
 1. `index.md` in project memory: the counts for each run (see `work-memory`,
-   step 12).
+   step 12). Skip the lines that are `in-progress`.
 2. `lessons.md`: the routing lessons and the process failures.
 3. The state file of each run in the range. Read only these sections:
    Process failures, Disagreements, Routing log, Phase log (failed attempts

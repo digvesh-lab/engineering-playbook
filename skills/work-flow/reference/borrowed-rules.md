@@ -51,5 +51,12 @@ Rules:
   them. Use the `flow-` subagents and the tiers from `work-route`.
 - If a borrowed file is not there, the step uses its own method. Say so in
   1 line and record it in the state file.
+- `grilling.md` says to visit each branch of the design tree. Instead:
+  - Stop when no answer can change the design.
+  - Answer from the code first. Do not ask the user what a search can answer.
+  - Ask a maximum of 3 rounds. 1 round is 1 message with each question
+    that does not depend on an answer that you do not have. After round 3,
+    show the requirements, the open questions, and your recommended
+    answers. Ask the user to accept them or to continue.
 - Do not edit a borrowed file. Only `/work-borrow-update` changes it. Only
   the user starts that skill.

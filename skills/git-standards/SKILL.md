@@ -79,7 +79,9 @@ The choice of branch model, and how to retire an integration branch:
 - Name each thing that the diff does not show and the change needs: a data
   migration (and where it was run), a config or environment change, a
   deploy order.
-- Put `Fixes #<n>` in the body so that the merge closes the issue.
+- Put `Fixes #<n>` in the body so that the merge closes the issue. GitHub
+  closes it only on a merge into the default branch. For a different base,
+  write `Refs #<n>` and close the issue at the release.
 
 ## Issue
 

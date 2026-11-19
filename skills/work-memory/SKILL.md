@@ -49,6 +49,20 @@ These belong to the project. Keep them in the repository and commit them with th
 - Use the glossary terms in each message and in the code.
 - Do not rewrite a decision record. A new decision gets a new record that names the old record.
 
+## Host memory
+
+The host can keep its own memory of the user (a memory folder of the user
+or of the project). It is a different store from this folder.
+
+- At recall, read the host memory notes that apply to the task. Use them as
+  evidence about the user's preferences.
+- Do not copy them into `preferences.md`. Keep each fact in 1 place:
+  general preferences stay in host memory; lessons and facts of runs go here.
+- Host memory never sets a switch, the scope, or a step (see Where switch
+  settings come from in `work-flow`).
+- If a host memory note conflicts with a switch or a step, report it. On
+  auto, ask only if the conflict changes what a step does.
+
 ## Rules for all memory
 
 - A note is from the past. Before you use a note about code, check it
@@ -95,43 +109,39 @@ disagreement records only its index line.
 **Count the uses.** When a note changes what a step does, add 1 to `uses`
 and set `last-used`. A note that you read but did not use is not a use.
 
-**Consolidate** when a file is over its cap, and after each 20 runs:
-
-1. Remove notes about code that does not exist now.
-2. Remove notes that were `stale` or `unverified` for more than 90 days.
-3. Merge lessons with the same cause into 1 rule. Add their `uses`.
-4. Move a lesson that is now a fixed project rule to `project.md`, or
-   suggest it for the instruction file.
-5. If a file is still over its cap, remove the entries with the lowest
-   `uses` and the oldest `last-used` first.
-6. Move index lines older than the last 100 runs to `archive/index-<year>.md`.
-
-Rules for consolidation:
-
-- Move each removed entry to `archive/<file>-<year>.md`. Do not delete it.
-- Never remove an entry with `pin`. Only the user sets `pin`. Only the user removes a preference.
-- Follow the `remember` switch. On manual, show what you will merge and move,
-  and ask. On auto, do it and report the counts in 1 line.
-- Use the `standard` tier to merge lessons, not the `fast` tier.
-- If a merge loses a detail that prevented a real failure, keep the detail.
+**Consolidate** when a file is over its cap, and after each 20 runs. Read
+`reference/consolidation.md` (in the `work-memory` skill folder) and follow it.
 
 ## Step 1: recall
 
-1. If the folder does not exist, create it. Say that this is the first run. Pass.
-2. Read `project.md` and `preferences.md` in full.
-3. Find the areas that the task touches. Read those `areas/` files.
-4. Search `index.md`, `decisions.md`, and `lessons.md` for the areas, the
+1. If the folder does not exist, create it. Say that this is the first run.
+2. Write the index line of this run now: `<date> <slug> | <type or "?"> |
+   in-progress | state: <state file path>`. Step 12 replaces it. A run that
+   ends with no step 12 still leaves this line.
+3. Close the old runs. A different session can still work on a run, so
+   close an `in-progress` line only if its state file had no change for
+   24 hours and its branch has no newer commit. Read the state file that it
+   names:
+   - Its branch has a PR: write the final line from the state file and the PR.
+   - It has no PR: outcome `abandoned`. Add 1 process failure: "step 12 not run".
+   - The state file is missing: outcome `unknown (no state file)`.
+   On manual, show the lines that you will close and ask. Draft the lessons
+   of each closed run as in step 12, with the `remember` switch.
+   If the folder was new in item 1, pass now.
+4. Read `project.md` and `preferences.md` in full.
+5. Find the areas that the task touches. Read those `areas/` files.
+6. Search `index.md`, `decisions.md`, and `lessons.md` for the areas, the
    files, and the key terms of the task. Read only the entries that match.
    Do not read the archive.
-5. Check each note against the current code. Remove what is stale.
-6. Write to the state file under "Recalled from memory", each with its source:
+7. Check each note against the current code. Remove what is stale.
+8. Write to the state file under "Recalled from memory", each with its source:
    - related past runs, and whether this task repeats or reverses one
    - valid area notes
    - decisions that limit this task
    - lessons and preferences that apply
    - the count of process failures in earlier runs
-7. Add 1 to `uses` on each note that changes what a step will do.
-8. If the task repeats an earlier fix or an abandoned run, say so clearly.
+9. Add 1 to `uses` on each note that changes what a step will do.
+10. If the task repeats an earlier fix or an abandoned run, say so clearly.
    Say what occurred the last time.
 
 **End of step.** Ask: "Here is what I remember. Is it correct?"
@@ -156,7 +166,7 @@ Do this after `work-ship`. Do it also when a run stops or aborts.
 
 Write draft entries from the state file:
 
-- `index.md`: 1 line for this run. End the line with the counts that
+- `index.md`: replace the `in-progress` line of this run. End the line with the counts that
   `work-retro` reads: `pf=<process failures> tries=<fix attempts>
   rounds=<review rounds> dis=<disagreements> asked=<questions on auto steps>`.
 - `areas/<area>.md`: the updated explanation, the new score, new gotchas.

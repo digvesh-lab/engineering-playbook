@@ -89,16 +89,45 @@ A missing label is not a hard stop.
 
 ## A split and the scope
 
-If the solution is split into pieces:
+If the solution is split into pieces, the state file has `delivery:`.
+
+**`delivery: single`** (the default):
 
 - This run builds only the first piece that nothing blocks. Its file list is the scope.
 - The pull request closes only the issue of that piece.
 - Tell the user the numbers of the open pieces. Each one is the task for a new run.
 
+## Stacked delivery
+
+**`delivery: stacked`**: this run builds the pieces in order, each on its
+own branch, with 1 pull request for each piece.
+
+- Only the user selects it, at the propose question. It is never auto. On
+  auto, `work-propose` asks for it.
+- Record each piece in `pieces:` in the state file: key, branch, base, PR,
+  issue, status, tries, rounds.
+- The first piece branches from the base. Each later piece branches from
+  the branch of the piece before it. The PR base of each piece is the
+  branch that it came from.
+- Each piece has its own scope (its file list), and its own build, test,
+  clean, prune, review, and ship. The `tries` and `rounds` budgets apply to
+  each piece.
+- If a review or PR feedback changes an earlier piece after a later piece
+  exists: commit the fix on the earlier branch. Then merge that branch
+  forward into each later branch, in order, with `git merge`. Do not rebase
+  and do not force-push. The user's choice of `stacked` approves these
+  merges, and only these. A merge conflict is a hard stop.
+- If the PR of an earlier piece is squash-merged, the later branches need a
+  rebase. That is a hard stop: ask the user.
+- Link each piece's issue with `Refs #<n>` until its code reaches the
+  default branch. The parent issue closes only when the last piece reaches
+  the default branch.
+
 ## Later in the run
 
-- `work-ship`: the pull request body has `Fixes #<n>` for the issue of this
-  run. It never closes a parent issue that has open pieces.
+- `work-ship`: the pull request body links the issue of this run:
+  `Fixes #<n>` if the PR base is the default branch, else `Refs #<n>`. It
+  never closes a parent issue that has open pieces.
 - Rework or resume: do not create an issue again. Edit the issue that the
   state file names (`gh issue edit`).
 - Stop or abort: add 1 comment to each issue that the run created. Say that

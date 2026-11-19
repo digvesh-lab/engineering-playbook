@@ -17,9 +17,13 @@ tier than the builder. Give it only:
 - the task summary and the "Requirements"
 - the approved solution and its file list
 - the diff: `git diff <base>...<branch>`
-- the baseline scores and their reasons
+- the baseline scores and their reasons, with their source
 
 Do not give it the build conversation or the phase log.
+
+If the state file has no baseline scores (for example `explain:skip`), the
+reviewer gives the Before scores for the code on the base, with the rubric
+of `work-explain`. Record their source as `reviewer@<base commit>`.
 
 If no subagent is available:
 
@@ -98,10 +102,34 @@ Give a score for the same 4 areas as `work-explain`, against the same things:
   Honesty in `work-flow`).
 - Review each choice under "Disagreements" as you review other code.
 
+## Return form
+
+Each reviewer returns only this form. Use only these words for the grades.
+
+```
+findings:
+  - <blocking | should-fix | note | unverified> <file:line> - <what is wrong> - <why it is important>
+counts: blocking=<n> should-fix=<n> note=<n> unverified=<n>
+scores:            # the 4 areas, 1 to 10
+  correctness: <before> -> <after> - <why>
+  readability: <before> -> <after> - <why>
+  test-coverage: <before> -> <after> - <why>
+  fit: <before> -> <after> - <why>
+before-source: <explain step | reviewer@<base commit>>
+```
+
+- The orchestrator sets the verdict from the counts. The reviewer does not
+  select it.
+- If a return is in a different form (other grade words, 1 total score),
+  send it back one time with this form. If the second return is also in a
+  different form, the review is `unverified`. It is never `pass`. Ask the user.
+- With 2 axes, put the 2 returns into 1 list and 1 score table. For each
+  area, use the lower score.
+
 ## Verdict and the loop
 
-- `pass`: no blocking finding.
-- `changes needed`: 1 blocking finding or more.
+- `pass`: `blocking=0`, and no score went down that the approved solution did not accept.
+- `changes needed`: 1 blocking finding or more, or a score that went down.
 
 On `changes needed`:
 

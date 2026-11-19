@@ -46,10 +46,11 @@ A limit makes an auto switch narrower. Outside the limit, the step is manual.
 ## Priority, lowest to highest
 
 1. the defaults in this file
-2. the `work-flow-defaults:` line in the instruction file
-3. the preset in the user's message
-4. single switches in the user's message
-5. what the user says later in the run
+2. the `work-flow-defaults:` line in the user's instruction file for all projects
+3. the `work-flow-defaults:` line in the project instruction file
+4. the preset in the user's message
+5. single switches in the user's message
+6. what the user says later in the run
 
 ## Examples
 
