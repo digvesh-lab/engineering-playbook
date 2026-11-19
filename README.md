@@ -11,6 +11,7 @@ format.
 | git-standards | default conventions for branches, commits, pull requests, and issues | `skills/git-standards` |
 | subagents | 4 role definitions that work-flow uses when the agent supports them | `adapters/<agent>/agents/` |
 | project-docs | a minimal `docs/` folder: 5 items, for agents and people | `skills/project-docs` |
+| skill-standards | the rules and a check script for writing a skill in this playbook | `skills/skill-standards` |
 
 ## Install
 
@@ -206,6 +207,16 @@ required.
 
 The docs change only when a decision, a run step, a main part, or a term
 changes. A bug fix or a new endpoint needs no docs change.
+
+## Skill standards
+
+`skill-standards` holds the rules for a new or changed skill: the kind, the
+frontmatter, the description, the body, the borrowed methods, and the places
+that must name the skill. Its check script finds broken rules:
+
+```bash
+python3 skills/skill-standards/scripts/check.py skills
+```
 
 ## Licence and credit
 

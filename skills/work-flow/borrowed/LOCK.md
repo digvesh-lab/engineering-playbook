@@ -19,6 +19,7 @@ the fallback that is written in its own skill.
 | tdd | tdd.md (with tests.md, mocking.md) | work-build | fetched @ 4ae2317 |
 | code-review | code-review.md | work-review | fetched @ 4ae2317 |
 | prototype | prototype.md (with prototype/UI.md, prototype/LOGIC.md) | work-prototype | fetched @ abeeaf9 |
+| writing-for-agents | writing-for-agents.md (with writing-for-agents/SKILL-MECHANICS.md) | skill-standards | fetched @ abeeaf9 |
 
 The names were checked on skills.sh on 12 November 2026. `grill-with-docs`
 is not in the list because it only calls `grilling` and `domain-modeling`.

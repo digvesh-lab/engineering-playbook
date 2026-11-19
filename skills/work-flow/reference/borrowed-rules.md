@@ -14,6 +14,7 @@ in `borrowed/`. `borrowed/LOCK.md` lists them and the source commit of each.
 | work-retro | `retro.md` | the categories of improvement |
 | work-build | `tdd.md` | the test-first loop |
 | work-review | `code-review.md` | the review |
+| skill-standards | `writing-for-agents.md` | the general method of writing for agents |
 
 Rules:
 
