@@ -30,7 +30,17 @@ user approves a solution.
      seams (where the tests meet the code). Each acceptance criterion needs
      a test. Prefer existing seams, at the highest level, and as few as possible.
    - how to undo it after a merge
-   - the size: `small` (1 or 2 files), `medium` (3 to 6), `large` (more)
+   - the size, from the behaviour and the contracts that change, not from
+     the file count:
+     - `small`: 1 behaviour in 1 module; no change to a public contract
+       (API, schema, config format, event, file format)
+     - `medium`: up to 3 behaviours or 2 modules, or 1 change to a public
+       contract; no data migration
+     - `large`: more than `medium`, a data migration, a new module or
+       pipeline, or more than 1 pull request
+
+     The file count is only a hint. Do not count tests, wiring (module
+     registration, DTOs, barrels), or docs.
 7. Call `work-prototype` if the options differ in one of these:
    - the screens, the layout, or the user flow
    - a state model that is hard to judge on paper
@@ -47,7 +57,8 @@ user approves a solution.
 10. For a `large` option, say whether it can be split. If
    `borrowed/to-tickets.md` exists in the `work-flow` folder, use its method
    for the split. Write the pieces and what blocks what to the state file.
-   Publish nothing in this part.
+   Say whether `delivery: single` or `delivery: stacked` fits better (see
+   `reference/tickets.md` in `work-flow`). Publish nothing in this part.
 11. Write all the options to the state file.
 
 ## End of step
@@ -69,6 +80,7 @@ Switch: `propose`.
     config format, unless the task asks for that
   - it is in the size limit of the switch (default `size<=medium`)
   - it was not rejected in an earlier run
+  - it is not split with `delivery: stacked`
 - `propose:auto(upgrade)`: pass also for a recommended Upgrade option. Only
   the user sets this. Without it, auto asks about each Upgrade option.
 
@@ -95,9 +107,10 @@ Ask: "Create a GitHub issue for this work?"
 Switch: `tickets`. On auto, pass only if each auto condition in
 `reference/tickets.md` is met. `tickets:skip` creates no issue.
 
-If the approved solution is split into pieces, this run builds only the
-first piece that nothing blocks. Make the file list of that piece the scope.
-Tell the user which pieces stay open.
+If the approved solution is split into pieces, follow "A split and the
+scope" in `reference/tickets.md`. With `delivery: single`, this run builds
+only the first piece that nothing blocks. With `delivery: stacked`, it
+builds each piece in order. The file list of the current piece is the scope.
 
 ## Next
 

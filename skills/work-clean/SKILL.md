@@ -16,8 +16,10 @@ code that this run changed.
 3. Use an existing helper where a new one does the same thing.
 4. Follow the style of the code around it and the conventions in memory.
 5. Work in small steps. Run the tests for the changed files after each step.
-6. Before the commit, do items 1, 3, and 4 of `work-test` again. A failure
-   starts the fix loop. The first attempt is to undo the last change.
+6. Before the commit, do items 1 and 3 of `work-test` again: the proof, and
+   the tests of the callers. Run the full lint and type-check. A failure starts the fix loop. The first
+   attempt is to undo the last change. All the checks run after
+   `work-prune` (see `reference/checks.md` in `work-flow`).
 7. Record in the state file what you simplified.
 
 If nothing needs a change, say so and make no commit. That is a pass.
@@ -28,7 +30,7 @@ Show a short diff summary. Ask: "Phase 2 is done. Commit it?"
 
 Switch: `clean`. On auto, pass only if:
 
-- the checks pass against the baseline
+- the proof, the tests of the callers, the lint, and the type-check pass
 - no test file changed in this phase
 - only files in the scope changed
 - no public name, signature, or output changed

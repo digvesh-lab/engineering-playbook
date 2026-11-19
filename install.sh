@@ -83,3 +83,9 @@ elif [[ $uninstall -eq 0 ]]; then
   echo "note: no subagent definitions for $agent. work-flow runs in one thread:" >&2
   echo "      no model routing, and the review of medium or large work needs a new thread." >&2
 fi
+
+if [[ "$agent" == claude && $uninstall -eq 0 ]]; then
+  echo "note: the skills read their reference/ files at run time. If the host blocks those reads," >&2
+  echo "      add these rules to permissions.allow in ~/.claude/settings.json:" >&2
+  echo "      \"Read(~/.claude/skills/**)\", \"Read(/$src/skills/**)\"" >&2
+fi

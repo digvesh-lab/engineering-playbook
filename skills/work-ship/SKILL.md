@@ -56,6 +56,9 @@ Ask: "Open a pull request for this work?"
 Switch: `ship.pr`. On auto, pass only if the push succeeded.
 
 - If a PR for this branch exists, update it. Do not open a second PR.
+- The PR base is the `base` in the state file. With `delivery: stacked`, it
+  is the base of the current piece in `pieces:`. After the PR of a piece,
+  continue with `work-build` for the next piece.
 - Write the body to a file outside the repository and pass it with
   `--body-file`. Do not put the body in the command line: Markdown
   backticks in a shell string run as commands.
@@ -64,8 +67,10 @@ Switch: `ship.pr`. On auto, pass only if the push succeeded.
   test results table, the scores, how to undo the change, and the open
   items. `reference/git-defaults.md` in `work-flow` says which section
   gets which.
-- If the state file has an issue for this run, put `Fixes #<n>` in the
-  body. Do not close a parent issue that has open pieces (see
+- If the state file has an issue for this run, link it. Use `Fixes #<n>`
+  only if the PR base is the default branch of the repository. For a
+  different base, use `Refs #<n>`: a merge into that base does not close
+  the issue. Do not close a parent issue that has open pieces (see
   `reference/tickets.md` in `work-flow`).
 - Ready or draft. Open the PR as ready for review only if all of these are true:
   - `risk` in the state file is `low`

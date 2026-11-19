@@ -21,12 +21,15 @@ Read the state file first.
 6. Get the evidence for the type:
    - **bug**: reproduce it. Trace the code path. Read `git log` and `git blame` for the files.
    - **feature**: confirm that it does not exist. Find where it belongs and
-     the nearest feature to copy. The user gives the acceptance criteria. If
-     there are none, ask.
+     the nearest feature to copy. Record the acceptance criteria that the
+     task or the user gave. If there are none, record
+     `acceptance criteria: from grill`. `work-grill` writes them.
    - **refactor**: name the problem with `file:line` examples. Say whether tests cover the behaviour.
    - **performance**: measure a baseline with a command that can run again. Run it 3 times or more.
    - **upgrade**: the current and target versions, the breaking changes, each usage that changes.
    - **tests**, **docs**: show the gap.
+   - **question**: answer it. Measure what can be measured. Say the sample
+     that each conclusion rests on, and what is not verified.
 7. Record `risk: low | high` and the reason (the Risk list in `work-route`).
    If you are not sure, record `high`.
 8. Give one verdict:
@@ -34,6 +37,7 @@ Read the state file first.
    - `unclear`: something necessary is missing. List the questions. This
      includes "not reproduced on a permitted environment".
    - `no-go`: not necessary (done, by design, duplicate, or harmful).
+   - `answered`: only for a `question`. The answer is in the state file.
 9. Write to the state file: type, base, summary, environment, risk, verdict,
    evidence. Each evidence item has its source and its environment:
    `file:line` with a short snippet, a command and its output, a commit, or a link.
@@ -104,11 +108,13 @@ Switch: `assess`. On auto, pass only if:
   assumption or from memory alone
 - you got the evidence on a permitted environment
 - for a bug or a performance task: the task or the user said where the problem was seen
-- for a feature: the user gave the acceptance criteria
 
 A verdict of `unclear` or `no-go` is a hard stop. Report and ask. For
 `no-go` on an issue, offer to write a reply. `work-memory` records the run.
 
+For `answered`: give the answer, then run `work-memory` in record mode. The
+run ends. This is not a hard stop.
+
 ## Next
 
-`work-explain`
+`work-explain`, or `work-memory` (record) for a `question`.

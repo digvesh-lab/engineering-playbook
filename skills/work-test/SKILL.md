@@ -14,8 +14,11 @@ the cases where it fails.
 ## Do
 
 1. **Proof.** Run the proof for the task type again. Confirm that it tests
-   the real behaviour and not a mock. For a bug, remove the fix, confirm
-   that the test fails, and put the fix back.
+   the real behaviour and not a mock. For a bug, the phase log must show
+   the test failing before the fix (`work-build`, item 1). If it does, do
+   not run it without the fix again. If it does not, remove the fix with a
+   reverse patch of the product files, see the test fail, and apply the
+   patch again. Do not use `stash`, `checkout`, or `restore`.
 2. **Edge cases.** List the cases that the change can get wrong. For each
    one, test it or say why it does not apply:
    - empty, null, missing, zero, negative, very large
@@ -76,8 +79,9 @@ Commit message: the convention of the repository, or `test: cover <area> (<ref>)
 ## After later phases
 
 `work-clean` and `work-prune` change the code after this step. Each one
-does items 1, 3, and 4 again before its commit. `work-review` does item 6
-again if one of them changed something.
+does items 1 and 3 again before its commit. `work-prune` then runs all the
+checks one time (item 4) if one of them changed a file. `work-review` does
+item 6 again if one of them changed something.
 
 ## Next
 

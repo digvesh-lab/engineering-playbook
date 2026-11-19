@@ -15,8 +15,9 @@ form of that skill. If the two differ, `git-standards` is correct.
 - **Commit.** One logical change. The body says why, and the cause for a
   bug. It does not repeat the diff. Add no trailer that the repository or
   the user did not ask for.
-- **Pull request.** Sections: Summary, Test plan, Tradeoffs. `Fixes #<n>`
-  if the run has an issue.
+- **Pull request.** Sections: Summary, Test plan, Tradeoffs. If the run has
+  an issue: `Fixes #<n>` when the PR base is the default branch, else
+  `Refs #<n>`.
 - **Issue.** The form in `tickets.md`.
 
 ## What goes into each section of a pull request

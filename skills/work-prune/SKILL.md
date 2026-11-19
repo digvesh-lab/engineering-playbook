@@ -16,9 +16,13 @@ Obeys the contract in `work-flow`. Work only on the work branch.
 4. Before you delete something, search the full repository for references.
    Include dynamic references: strings, reflection, config, exports,
    templates, other packages.
-5. Before the commit, do items 1, 3, and 4 of `work-test` again. A failure
-   starts the fix loop. The first attempt is to put back the last deletion.
-6. Record in the state file each thing that you removed and the evidence
+5. Before the commit, do items 1 and 3 of `work-test` again: the proof, and
+   the tests of the callers. Run the full lint and type-check. A failure starts the fix loop. The first
+   attempt is to put back the last deletion.
+6. After the commit, if clean or prune changed a file, run all the checks
+   one time (check 4 in `reference/checks.md` of `work-flow`). A failure
+   starts the fix loop in the phase that made it.
+7. Record in the state file each thing that you removed and the evidence
    that nothing used it.
 
 Dead code that existed before this work is out of scope. List it under
@@ -32,7 +36,7 @@ Show a short diff summary. Ask: "Phase 3 is done. Commit it?"
 
 Switch: `prune`. On auto, pass only if:
 
-- the checks pass against the baseline
+- all the checks pass against the baseline (item 6)
 - each deleted thing has 0 references in the repository
 - nothing that you deleted is exported or part of a public API (always ask
   before you remove a public symbol)

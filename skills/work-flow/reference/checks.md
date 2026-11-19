@@ -12,8 +12,19 @@ Part of the `work-flow` contract. The rules in `SKILL.md` have priority.
   "Open items".
 - **Flaky tests.** If a test fails and then passes on a second run, record
   it as flaky. Run it 2 more times. A flaky test is not proof.
-- **Order.** Run the tests for the changed files first. Run all the checks
-  before each commit.
+- **Order.** Run the tests for the changed files first.
+- **When to run all the checks.** At these 4 points of a round:
+  1. the baseline, before any change
+  2. before the `work-build` commit
+  3. in `work-test` (item 4)
+  4. after `work-prune`, before `work-review`, if clean or prune changed a file
+
+  Before their commits, `work-clean` and `work-prune` run the tests of the
+  changed files and of their callers, and the full lint and type-check.
+  Lint and type-check are cheap and find breaks outside the callers. If
+  check 4 fails, start the fix loop in the phase that made the failure.
+  The first attempt is to undo its last change. Each review round runs
+  checks 2 to 4 again.
 - **No weaker checks.** Do not delete, skip, or loosen a test. Do not edit a
   snapshot or a lint rule to agree with new output. The only exception is
   an approved solution that says so.

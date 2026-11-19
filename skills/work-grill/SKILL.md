@@ -19,7 +19,10 @@ Read the borrowed files in the `borrowed/` folder of the `work-flow` skill that 
 - `to-spec.md`: the form of the spec. Write the spec to the state file. Do
   not publish it. Only the `tickets` switch publishes, in `work-propose`.
 
-The contract has priority (see Borrowed skills in `work-flow`).
+The contract has priority (see Borrowed skills in `work-flow`). The stop
+rule and the round limit in `reference/borrowed-rules.md` (in the
+`work-flow` skill folder) replace the
+borrowed rule to visit each branch of the design tree.
 
 If the borrowed files do not exist, use this method:
 
@@ -69,7 +72,9 @@ Switch: `grill`.
   - the task is not high risk
 
   If one is not met, interview.
-- `grill:skip`: do not interview. Record the acceptance criteria from `work-assess`.
+- `grill:skip`: do not interview. Record the acceptance criteria from
+  `work-assess`. If assess recorded `from grill`, a skip is not possible:
+  ask the user for the criteria.
 
 If a requirement conflicts with the code or with a different requirement,
 say so before you continue (see Honesty in `work-flow`).

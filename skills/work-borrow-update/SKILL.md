@@ -36,8 +36,11 @@ Usage: `/work-borrow-update [check | <skill> | add <skill> | remove <skill>]`
    this commit, report "no change" and stop.
 4. Read the licence file in the source. If it is not MIT, stop and tell the
    user. Copy it to `borrowed/LICENSE-mattpocock.txt`.
-5. For each skill in `LOCK.md`, find `<name>/SKILL.md` in the source. If the
-   name is not there, find the nearest names. Show them and ask the user
+5. For each skill in `LOCK.md`, find `<name>/SKILL.md` at any depth in the
+   source (`find <temp> -path '*/<name>/SKILL.md'`). The source groups
+   skills in folders, for example `skills/engineering/<name>/`. Record the
+   path. If more than 1 path matches, show them and ask. Do not take the
+   first. If the name is not there, find the nearest names. Show them and ask the user
    which to use, or whether to remove the entry. Do not guess.
 6. Compare each new file with the local copy. For each skill, report:
    - `new`, `unchanged`, or `changed`
