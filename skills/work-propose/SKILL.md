@@ -31,19 +31,24 @@ user approves a solution.
      a test. Prefer existing seams, at the highest level, and as few as possible.
    - how to undo it after a merge
    - the size: `small` (1 or 2 files), `medium` (3 to 6), `large` (more)
-7. Measure each data rule. A rule that classifies, matches, merges, or
+7. Call `work-prototype` if the options differ in one of these:
+   - the screens, the layout, or the user flow
+   - a state model that is hard to judge on paper
+
+   Use the variant that the user chose in the recommendation.
+8. Measure each data rule. A rule that classifies, matches, merges, or
    skips records must be run against the data before it is an option or an
    acceptance criterion. Give the count of records it hits and the cases
    that break it. If the data cannot be read in this step, label the rule
    `unverified` and make the measurement the first build task.
-8. Recommend one option. Give the reason. The recommendation is the option
+9. Recommend one option. Give the reason. The recommendation is the option
    that is best for the code. It is not the smallest option or the option
    that the user named first.
-9. For a `large` option, say whether it can be split. If
+10. For a `large` option, say whether it can be split. If
    `borrowed/to-tickets.md` exists in the `work-flow` folder, use its method
    for the split. Write the pieces and what blocks what to the state file.
    Publish nothing in this part.
-10. Write all the options to the state file.
+11. Write all the options to the state file.
 
 ## End of step
 

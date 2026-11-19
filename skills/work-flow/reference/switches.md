@@ -18,6 +18,9 @@ Part of the `work-flow` contract. The rules in `SKILL.md` have priority.
 `research` is manual in `default`, `manual`, and `guided`. It is auto in
 `auto` and `full-auto`. `research:skip` does no outside search.
 
+`prototype` is manual in `default`, `manual`, and `guided`. It is auto in
+`auto` and `full-auto`. `prototype:skip` makes no prototype.
+
 No preset sets an `env:` switch or `propose:auto(upgrade)`.
 
 ## Limits
@@ -36,6 +39,7 @@ A limit makes an auto switch narrower. Outside the limit, the step is manual.
 - `grill:skip`: no interview. Use the acceptance criteria from `work-assess`.
 - `research:skip`: no search outside the repository. `research.budget=N`:
   the searches for each call (default 8).
+- `prototype:skip`: no flowchart, variants, or demo.
 - `tries=N`, `rounds=N`: the loop budgets. Defaults: 3 and 2.
 - `cost=cheap | balanced | best`, and `<step>.model=<tier>`: see `work-route`.
 

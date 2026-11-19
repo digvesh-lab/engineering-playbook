@@ -29,7 +29,7 @@ switches: {recall: auto, assess: manual, explain: manual, grill: manual,
   propose: manual, build.branch: manual, build.commit: manual, test: manual,
   clean: auto, prune: auto, review: manual, ship.push: manual,
   ship.pr: manual, remember: auto, iterate: manual, tickets: manual,
-  research: manual}
+  research: manual, prototype: manual}
 switch-source: <default | instruction file at <base commit> | the user's message>
 budgets: {tries: 3, rounds: 2}
 risk: low | high (<reason>)
@@ -51,6 +51,7 @@ steps:               # pending | passed (user) | passed (auto: <reason>) | redo 
 ## Research (each call: question, findings with labels and links, answer, gaps)
 ## Requirements (goal, acceptance criteria, out of scope, open questions)
 ## Options and approved solution (with file list and test plan)
+## Prototype (each call: question, shape, files, variants, chosen, settled)
 ## Check baseline
 ## Phase log (each attempt, also the failed attempts)
 ## Routing log (step part, subagent, tier, calls, each tier change and its signal)

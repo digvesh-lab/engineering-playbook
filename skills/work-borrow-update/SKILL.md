@@ -28,12 +28,12 @@ Usage: `/work-borrow-update [check | <skill> | add <skill> | remove <skill>]`
 
 ## Steps
 
-1. Read `LOCK.md`. Record the current commit and the list of skills.
+1. Read `LOCK.md`. Record the list of skills and the commit of each row.
 2. Get the source into a temporary folder outside the project:
    `git clone --depth 1 https://github.com/mattpocock/skills <temp>`
    If this fails, stop and report the error. Do not use a different source.
-3. Record the new commit hash and its date. If it is the same as the lock,
-   report "no change" and stop.
+3. Record the new commit hash and its date. If each row of the lock has
+   this commit, report "no change" and stop.
 4. Read the licence file in the source. If it is not MIT, stop and tell the
    user. Copy it to `borrowed/LICENSE-mattpocock.txt`.
 5. For each skill in `LOCK.md`, find `<name>/SKILL.md` in the source. If the
@@ -53,7 +53,9 @@ Usage: `/work-borrow-update [check | <skill> | add <skill> | remove <skill>]`
    - First line: `<!-- source: mattpocock/skills/<path> @ <commit>, <date>. Do not edit. -->`
    - Remove the frontmatter. The file must not register as a separate skill.
    - Copy the supporting files that it refers to into `borrowed/<name>/`.
-9. Update `LOCK.md`: the commit, the date, and the status of each skill.
+9. Update `LOCK.md`: the commit and the date in the header list, and the
+   status (`fetched @ <commit>`) of each updated row. Rows that were not
+   updated keep their commit. Remove a header commit that no row uses.
 10. Check the links. For each step skill that names a borrowed file, confirm
     that the file exists. Read each updated file one time. Confirm that its
     method is what the step expects: an interview, a spec, a test-first

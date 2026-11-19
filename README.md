@@ -11,6 +11,7 @@ format.
 | git-standards | default conventions for branches, commits, pull requests, and issues | `skills/git-standards` |
 | subagents | 4 role definitions that work-flow uses when the agent supports them | `adapters/<agent>/agents/` |
 | project-docs | a minimal `docs/` folder: 5 items, for agents and people | `skills/project-docs` |
+| skill-standards | the rules and a check script for writing a skill in this playbook | `skills/skill-standards` |
 
 ## Install
 
@@ -104,7 +105,9 @@ is not installed, work-flow uses the short form in
 
 Other work-flow skills: `work-research` (searches outside the repository
 for prior art and design inspiration; steps 2 to 5 call it when they need
-it, switch `research`), `work-route` (which model tier and which subagent does each
+it, switch `research`), `work-prototype` (a flowchart, HTML UI variants, or a
+clickable logic demo of the options; `work-propose` calls it when the options
+differ in what the user sees, switch `prototype`), `work-route` (which model tier and which subagent does each
 part), `work-retro` (finds mistakes of the workflow that repeat),
 `work-borrow-update` (updates the borrowed method files).
 
@@ -204,6 +207,16 @@ required.
 
 The docs change only when a decision, a run step, a main part, or a term
 changes. A bug fix or a new endpoint needs no docs change.
+
+## Skill standards
+
+`skill-standards` holds the rules for a new or changed skill: the kind, the
+frontmatter, the description, the body, the borrowed methods, and the places
+that must name the skill. Its check script finds broken rules:
+
+```bash
+python3 skills/skill-standards/scripts/check.py skills
+```
 
 ## Licence and credit
 
