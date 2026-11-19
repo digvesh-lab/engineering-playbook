@@ -102,7 +102,9 @@ branch, commit, pull request, and issue in a run. It also works alone. If it
 is not installed, work-flow uses the short form in
 `skills/work-flow/reference/git-defaults.md`.
 
-Other work-flow skills: `work-route` (which model tier and which subagent does each
+Other work-flow skills: `work-research` (searches outside the repository
+for prior art and design inspiration; steps 2 to 5 call it when they need
+it, switch `research`), `work-route` (which model tier and which subagent does each
 part), `work-retro` (finds mistakes of the workflow that repeat),
 `work-borrow-update` (updates the borrowed method files).
 

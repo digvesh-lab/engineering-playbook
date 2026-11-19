@@ -126,6 +126,8 @@ size, use `medium`.
 | explain | write a new explanation and score | standard | standard | standard |
 | grill | read the code to answer its own questions | fast | fast | fast |
 | grill | the interview | main thread | main thread | main thread |
+| research | search, read, summarise (a subagent with web tools, else main thread) | fast | fast | fast |
+| research | label the findings, write the answer | standard | standard | standard |
 | propose | design the options | standard | strong | strong |
 | build | a `mechanical` slice (see Build slices) | standard | standard | standard |
 | build | a `judgment` slice | standard | strong | strong |

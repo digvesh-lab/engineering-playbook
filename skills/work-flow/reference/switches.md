@@ -15,6 +15,9 @@ Part of the `work-flow` contract. The rules in `SKILL.md` have priority.
 `tickets` is manual in `default`, `manual`, and `guided`. It is auto in
 `auto` and `full-auto`. `tickets:skip` creates no issue.
 
+`research` is manual in `default`, `manual`, and `guided`. It is auto in
+`auto` and `full-auto`. `research:skip` does no outside search.
+
 No preset sets an `env:` switch or `propose:auto(upgrade)`.
 
 ## Limits
@@ -31,6 +34,8 @@ A limit makes an auto switch narrower. Outside the limit, the step is manual.
 
 - `explain:skip`: no explanation. Record the score.
 - `grill:skip`: no interview. Use the acceptance criteria from `work-assess`.
+- `research:skip`: no search outside the repository. `research.budget=N`:
+  the searches for each call (default 8).
 - `tries=N`, `rounds=N`: the loop budgets. Defaults: 3 and 2.
 - `cost=cheap | balanced | best`, and `<step>.model=<tier>`: see `work-route`.
 

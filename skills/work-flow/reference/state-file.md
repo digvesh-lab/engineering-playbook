@@ -28,7 +28,8 @@ branch:
 switches: {recall: auto, assess: manual, explain: manual, grill: manual,
   propose: manual, build.branch: manual, build.commit: manual, test: manual,
   clean: auto, prune: auto, review: manual, ship.push: manual,
-  ship.pr: manual, remember: auto, iterate: manual, tickets: manual}
+  ship.pr: manual, remember: auto, iterate: manual, tickets: manual,
+  research: manual}
 switch-source: <default | instruction file at <base commit> | the user's message>
 budgets: {tries: 3, rounds: 2}
 risk: low | high (<reason>)
@@ -47,6 +48,7 @@ steps:               # pending | passed (user) | passed (auto: <reason>) | redo 
 ## Task summary
 ## Verdict and evidence
 ## Explanation and score
+## Research (each call: question, findings with labels and links, answer, gaps)
 ## Requirements (goal, acceptance criteria, out of scope, open questions)
 ## Options and approved solution (with file list and test plan)
 ## Check baseline
