@@ -14,12 +14,15 @@ user approves a solution.
    option again only if you say that it was rejected, why, and what changed.
 2. On a rework: start with what the failed attempt showed. Do not offer the
    same approach with no change.
-3. Design each option against the "Requirements" in the state file.
-4. Offer 1 to 3 options. Label each:
+3. If the problem is common and the code does not show how to solve it,
+   call `work-research` for prior art before you design the options.
+   Cite each finding that an option uses, with its label.
+4. Design each option against the "Requirements" in the state file.
+5. Offer 1 to 3 options. Label each:
    - **Aligned**: fits the current design. Uses existing patterns, helpers, and conventions.
    - **Upgrade**: makes the design better. Say what changes, why it is
      better, and the cost of the migration.
-5. For each option give:
+6. For each option give:
    - a summary
    - the exact file list, with test files
    - the risks, and what can break in other places (callers, data, public API)
@@ -28,19 +31,19 @@ user approves a solution.
      a test. Prefer existing seams, at the highest level, and as few as possible.
    - how to undo it after a merge
    - the size: `small` (1 or 2 files), `medium` (3 to 6), `large` (more)
-6. Measure each data rule. A rule that classifies, matches, merges, or
+7. Measure each data rule. A rule that classifies, matches, merges, or
    skips records must be run against the data before it is an option or an
    acceptance criterion. Give the count of records it hits and the cases
    that break it. If the data cannot be read in this step, label the rule
    `unverified` and make the measurement the first build task.
-7. Recommend one option. Give the reason. The recommendation is the option
+8. Recommend one option. Give the reason. The recommendation is the option
    that is best for the code. It is not the smallest option or the option
    that the user named first.
-8. For a `large` option, say whether it can be split. If
+9. For a `large` option, say whether it can be split. If
    `borrowed/to-tickets.md` exists in the `work-flow` folder, use its method
    for the split. Write the pieces and what blocks what to the state file.
    Publish nothing in this part.
-9. Write all the options to the state file.
+10. Write all the options to the state file.
 
 ## End of step
 
