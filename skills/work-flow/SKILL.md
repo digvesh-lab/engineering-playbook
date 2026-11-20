@@ -322,8 +322,9 @@ Detail: `reference/language.md`.
 - Keep `.agents/work-flow/runs/<slug>.md`. Add `.agents/work-flow/runs/` to `.git/info/exclude`.
 - Each skill reads the state file first. The state file is the truth. Your
   memory of the conversation is not.
-- `resume`: read the state file. Check that the branch and the latest commit
-  agree with it. Show the switches. Continue from the first step that did not pass.
+- `resume`: read the state file. Check that the branch and the latest
+  commit agree with it. Rewrite the `session:` line. Show the switches.
+  Continue from the first step that did not pass.
 - A new thread between steps, then `resume`, is normal. It keeps the context small.
 
 Template: `reference/state-file.md`.
@@ -351,7 +352,8 @@ all of them at the start.
 1. Read the task, the preset, the switches, the budgets, and the cost setting.
 2. Read `work-route`. If the 4 `flow-` subagents do not exist, follow its
    section "No subagents" and give the user its recommendation.
-3. Read `reference/state-file.md`. Create the state file and the git exclude entry.
+3. Read `reference/state-file.md`. Create the state file (with its
+   `session:` line) and the git exclude entry.
 4. Show the model map and the main-thread recommendation. Then show the
    switches in 1 line.
 5. Run `work-memory` in recall mode.

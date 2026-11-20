@@ -24,15 +24,21 @@ Part of the `work-flow` contract. The rules in `SKILL.md` have priority.
   does not permit reads of the skill folder. The fix: a read permission
   for the skill folder and for the folder that its link points to.
   `install.sh` prints the rules.
-- `resume`: read the state file. Check that the branch, the latest commit,
-  and the pull request agree with it. If they do not, that is a hard stop
-  (see Hard stops in `SKILL.md`). Show the switches. Continue from the first
-  step that did not pass.
+- `resume`: read the state file. Check that the branch, the latest
+  commit, and the pull request agree with it. If they do not, that is a hard
+  stop (see Hard stops in `SKILL.md`). Write or replace the `session:` line
+  with the current session; remove it if there is no id. Show the switches.
+  Continue from the first step that did not pass.
+- **Session id.** The id that the host gives this session. If the host has
+  no id but has a scratchpad path `.../<uuid>/scratchpad`, use that uuid.
+  Write the line as `session: <id>` with nothing after the id. If there is
+  no id, omit the line.
 
 Template:
 
 ```
 task: <1 line>
+session: <session id; see "Session id" above>
 ref: <issue or ticket link, if any>
 issues: <each issue that this run created or uses: number, title, parent, blocked by>
 type: bug | feature | refactor | performance | upgrade | tests | docs | question
