@@ -111,14 +111,16 @@ class StartSignals(unittest.TestCase):
         self.assertFalse(lib.skill_starts_work_flow('work-flow'))
 
     def test_read_block_warning(self):
-        skill = '/clone/skills/work-flow'
-        self.assertIsNone(lib.read_block_warning(False, '/w', [], skill))
-        self.assertIsNone(lib.read_block_warning(True, '/w', ['/clone'], skill))
-        self.assertIsNone(lib.read_block_warning(True, '/clone', [], skill))
-        self.assertIsNone(lib.read_block_warning(True, '/w', ['/clone/skills'], skill))
-        msg = lib.read_block_warning(True, '/w', ['/clone2'], skill)
-        self.assertIn('STOP', msg)
-        self.assertIn('/add-dir /clone)', msg)
+        msg = lib.read_block_warning('/clone/skills/work-flow')
+        self.assertIn('/clone/skills/work-flow/reference/', msg)
+        self.assertIn('/add-dir', msg)
+        self.assertNotIn('STOP', msg)
+
+    def test_index_slug_is_run_token(self):
+        idx = '- 2026-11-20 other | fix | api | PR #1 | done | fix/auditor-data-noise\n'
+        self.assertFalse(lib.index_has_final_line(idx, 'fix/auditor-data-noise'))
+        self.assertTrue(lib.index_has_final_line(idx, 'other'))
+        self.assertFalse(lib.index_has_final_line('- 2026-11-20 x | in-progress |\n', 'y'))
 
 
 class ProdMatch(unittest.TestCase):
@@ -130,6 +132,14 @@ class ProdMatch(unittest.TestCase):
     def test_misses(self):
         for t in ('.env.local', '.env.example', '.env', '.env.products', 'reproduction.env', 'npm run prod', ''):
             self.assertIsNone(lib.prod_match(t), t)
+
+    def test_search_commands_skipped(self):
+        for t in ('git commit -m "drop .env.production"', 'rg .env.prod src', 'grep -r prod.env .',
+                  'git log -S.env.production', 'ls && git show x:.env.prod'):
+            self.assertIsNone(lib.prod_match(t), t)
+        for t in ('cat .env.production', 'source .env.prod', 'node --env-file=.env.production x.js',
+                  'git log; cat .env.prod'):
+            self.assertTrue(lib.prod_match(t), t)
 
 
 class BranchCreation(unittest.TestCase):

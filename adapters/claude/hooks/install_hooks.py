@@ -9,6 +9,7 @@ import sys
 EVENTS = [('UserPromptSubmit', None), ('PreToolUse', 'Skill'), ('PreToolUse', 'Edit|Write|NotebookEdit'),
           ('PreToolUse', 'Bash'), ('PreToolUse', 'Read|Grep'), ('Stop', None), ('SessionEnd', None)]
 OLD_HOOK = 'work-flow-steps-check.py'
+GUARD_NAME = 'work_flow_guard.py'
 TIMEOUT = 5
 
 
@@ -78,7 +79,8 @@ def strip(data, match):
 
 
 def entries(path):
-    cmd = f'python3 -I {shlex.quote(path)}'
+    q = shlex.quote(path)
+    cmd = f'[ -f {q} ] && python3 -I {q} || true'  # exit 2 from a missing file would block the tool
     out = []
     for event, matcher in EVENTS:
         group = {'hooks': [{'type': 'command', 'command': cmd, 'timeout': TIMEOUT}]}
@@ -91,9 +93,12 @@ def entries(path):
 def install(spath, gpath):
     data = load(spath)
     if os.path.exists(spath):
-        shutil.copy2(os.path.realpath(spath), spath + '.bak')
-        print(f'backup  {spath}.bak')
-    strip(data, lambda c: gpath in c)
+        if os.path.exists(spath + '.bak'):
+            print(f'backup  kept existing {spath}.bak')
+        else:
+            shutil.copy2(os.path.realpath(spath), spath + '.bak')
+            print(f'backup  wrote {spath}.bak')
+    strip(data, lambda c: GUARD_NAME in c)
     for event, cmd in strip(data, lambda c: OLD_HOOK in c):
         print(f'replaced old {event} hook {cmd}')
     hooks = data.setdefault('hooks', {})
@@ -107,7 +112,7 @@ def uninstall(spath, gpath):
     if not os.path.exists(spath):
         return
     data = load(spath)
-    if strip(data, lambda c: gpath in c):
+    if strip(data, lambda c: GUARD_NAME in c):
         save(spath, data)
         print(f'removed work-flow guard hooks from {spath}')
 

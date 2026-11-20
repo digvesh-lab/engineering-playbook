@@ -3,6 +3,8 @@ import io
 import json
 import os
 import shutil
+import stat
+import subprocess
 import tempfile
 import unittest
 from unittest import mock
@@ -40,14 +42,15 @@ class Installer(unittest.TestCase):
 
     def tagged(self, data):
         return [(e, g.get('matcher')) for e, gs in data.get('hooks', {}).items() for g in gs
-                for h in g['hooks'] if self.gpath in h['command']]
+                for h in g['hooks'] if 'work_flow_guard.py' in h['command']]
 
     def test_creates_missing_settings(self):
         self.run_(ih.install)
         data = self.read()
         self.assertEqual(sorted(self.tagged(data), key=str), sorted(ih.EVENTS, key=str))
         h = data['hooks']['Stop'][0]['hooks'][0]
-        self.assertEqual(h, {'type': 'command', 'command': f'python3 -I {self.gpath}', 'timeout': 5})
+        self.assertEqual(h, {'type': 'command', 'command': ih.entries(self.gpath)[0][1]['hooks'][0]['command'], 'timeout': 5})
+        self.assertEqual(h['command'], f'[ -f {self.gpath} ] && python3 -I {self.gpath} || true')
         self.assertNotIn('matcher', data['hooks']['Stop'][0])
         self.assertFalse(os.path.exists(self.spath + '.bak'))
 
@@ -83,6 +86,35 @@ class Installer(unittest.TestCase):
         self.run_(ih.install)
         self.run_(ih.uninstall)
         self.assertEqual(self.read(), {'model': 'x'})
+
+    def test_replaces_entries_with_other_clone_path(self):
+        old = {'hooks': [{'type': 'command', 'command': 'python3 -I /old/clone/work_flow_guard.py'}]}
+        self.write({'hooks': {'Stop': [old]}})
+        self.run_(ih.install)
+        cmds = [h['command'] for g in self.read()['hooks']['Stop'] for h in g['hooks']]
+        self.assertEqual(len(cmds), 1)
+        self.assertNotIn('/old/clone', cmds[0])
+        self.write({'hooks': {'Stop': [old]}})
+        self.run_(ih.uninstall)
+        self.assertEqual(self.read(), {})
+
+    def test_command_exits_zero_when_file_missing(self):
+        cmd = ih.entries(os.path.join(self.tmp, 'gone dir', 'work_flow_guard.py'))[0][1]['hooks'][0]['command']
+        self.assertEqual(subprocess.run(['sh', '-c', cmd], capture_output=True).returncode, 0)
+
+    def test_first_backup_is_kept(self):
+        self.write({'model': 'first'})
+        self.assertIn('wrote', self.run_(ih.install))
+        self.write({'model': 'second'})
+        self.assertIn('kept', self.run_(ih.install))
+        with open(self.spath + '.bak') as fh:
+            self.assertEqual(json.load(fh), {'model': 'first'})
+
+    def test_keeps_file_mode(self):
+        self.write({'model': 'x'})
+        os.chmod(self.spath, 0o600)
+        self.run_(ih.install)
+        self.assertEqual(stat.S_IMODE(os.stat(self.spath).st_mode), 0o600)
 
     def test_uninstall_without_settings(self):
         self.run_(ih.uninstall)

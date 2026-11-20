@@ -97,16 +97,16 @@ def _note_run_file(ctx, path):
         ctx.marker = lib.write_marker(ctx.env, ctx.sid, [m.group(1)], create=False)
 
 
+def _start_text(ctx):
+    skill_real = os.path.realpath(os.path.join(lib.claude_home(ctx.env), 'skills', 'work-flow'))
+    return ' '.join([lib.start_context(skill_real), lib.read_block_warning(skill_real)])
+
+
 def on_prompt(ctx):
     if not lib.prompt_starts_work_flow(ctx.data.get('prompt')):
         return None
     _start_marker(ctx)
-    skill_real = os.path.realpath(os.path.join(lib.claude_home(ctx.env), 'skills', 'work-flow'))
-    parts = [lib.start_context(skill_real)]
-    warn = lib.read_block_warning(ctx.block_reads, ctx.cwd, ctx.additional, skill_real)
-    if warn:
-        parts.append(warn)
-    return {'hookSpecificOutput': {'hookEventName': 'UserPromptSubmit', 'additionalContext': ' '.join(parts)}}
+    return {'hookSpecificOutput': {'hookEventName': 'UserPromptSubmit', 'additionalContext': _start_text(ctx)}}
 
 
 def on_pre_tool(ctx, allow_roots):
@@ -115,6 +115,7 @@ def on_pre_tool(ctx, allow_roots):
     if tool == 'Skill':
         if lib.skill_starts_work_flow(ti):
             _start_marker(ctx)
+            return {'hookSpecificOutput': {'hookEventName': 'PreToolUse', 'additionalContext': _start_text(ctx)}}
         return None
     if tool in GATED_EDIT:
         raw = ti.get('file_path') or ti.get('notebook_path')

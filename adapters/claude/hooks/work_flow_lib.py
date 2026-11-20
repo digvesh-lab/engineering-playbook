@@ -198,7 +198,7 @@ def order_problems(steps):
 
 
 def index_has_final_line(index_text, slug):
-    pat = re.compile(rf'(?<![\w-]){re.escape(slug)}(?![\w-])')
+    pat = re.compile(rf'^\s*-?\s*\S+\s+{re.escape(slug)}\s*\|')
     for line in (index_text or '').splitlines():
         if pat.search(line) and not re.search(r'\|\s*in-progress\s*\|', line):
             return True
@@ -350,11 +350,16 @@ def branch_decision(command, sid, marker_exists, session_runs, active):
     return None
 
 
+SEARCH_WORDS = ('git', 'rg', 'grep', 'ag')
+
+
 def prod_match(text):
     for rx in PROD_RES:
-        m = rx.search(text or '')
-        if m:
-            return m.group(0)
+        for m in rx.finditer(text or ''):
+            seg = re.split(r'[;&|\n]', text[:m.start()])[-1].split()
+            first = os.path.basename(seg[0]) if seg else ''
+            if first not in SEARCH_WORDS:
+                return m.group(0)
     return None
 
 
@@ -364,9 +369,10 @@ def prod_decision(texts, active):
     for t in texts:
         hit = prod_match(t)
         if hit:
-            return (f'work-flow: run {active.path} does not permit production '
-                    f'(env: [{", ".join(active.env)}]); matched by file name only ({hit}); '
-                    f'ask the user and set env:prod in the state file.')
+            return (f'work-flow: this command reads a production env file ({hit}) and run {active.path} '
+                    f'does not permit production. Ask the user first. Only after the user permits it, '
+                    f'add prod to env: in the state file. This guard matches file names only; a script '
+                    f'that loads production settings by default is not detected.')
     return None
 
 
@@ -388,15 +394,10 @@ def start_context(skill_real):
             f'Read the reference files at {skill_real}/reference/.')
 
 
-def read_block_warning(block_reads, cwd, additional, skill_real):
-    if not block_reads:
-        return None
-    if any(under(skill_real, d) for d in [cwd, *additional] if d):
-        return None
-    clone = os.path.dirname(os.path.dirname(skill_real))
-    return (f'STOP: the Read tool cannot open the work-flow reference files. Ask the user to add {clone} '
-            f'to permissions.additionalDirectories (or run /add-dir {clone}). '
-            f'Do not rebuild a template from memory.')
+def read_block_warning(skill_real):
+    return (f'work-flow reference files: {skill_real}/reference/. If a Read of them is denied, read them '
+            f'through this path; if it is outside the working directories, ask the user to add it with '
+            f'/add-dir. Do not rebuild a template from memory.')
 
 
 # ---------- settings, marker, git ----------

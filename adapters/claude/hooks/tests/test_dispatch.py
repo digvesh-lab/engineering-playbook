@@ -36,19 +36,19 @@ class Markers(TempCase):
         ctx = out['hookSpecificOutput']
         self.assertEqual(ctx['hookEventName'], 'UserPromptSubmit')
         self.assertIn(os.path.join(self.clone, 'skills', 'work-flow') + '/reference/', ctx['additionalContext'])
-        self.assertNotIn('STOP', ctx['additionalContext'])
+        self.assertIn('/add-dir', ctx['additionalContext'])
         m = self.marker()
         self.assertEqual(m['repos'], [self.repo])
         self.assertIn('started', m)
 
-    def test_read_block_check(self):
-        self.settings({'blockReadsOutsideWorkingDirectories': True, 'additionalDirectories': []})
-        ctx = self.prompt('/work-flow x')['hookSpecificOutput']['additionalContext']
-        self.assertIn('STOP', ctx)
-        self.assertIn(f'/add-dir {self.clone}', ctx)
-        self.assertNotIn('SECRET', ctx)
-        self.settings({'blockReadsOutsideWorkingDirectories': True, 'additionalDirectories': [self.clone]})
-        self.assertNotIn('STOP', self.prompt('/work-flow x')['hookSpecificOutput']['additionalContext'])
+    def test_reference_path_always_injected(self):
+        ref = os.path.join(self.clone, 'skills', 'work-flow') + '/reference/'
+        for perms in ({}, {'blockReadsOutsideWorkingDirectories': True, 'additionalDirectories': []}):
+            self.settings(perms)
+            ctx = self.prompt('/work-flow x')['hookSpecificOutput']['additionalContext']
+            self.assertIn(ref, ctx)
+            self.assertNotIn('STOP', ctx)
+            self.assertNotIn('SECRET', ctx)
 
     def test_status_and_other_prompts(self):
         self.assertIsNone(self.prompt('/work-flow status'))
@@ -59,11 +59,19 @@ class Markers(TempCase):
         self.prompt('/work-flow x', sid='../../evil')
         self.assertFalse(os.path.exists(lib.marker_dir(self.env)))
 
-    def test_skill_creates_marker_silently(self):
+    def test_skill_creates_marker_and_injects_start_text(self):
         self.assertIsNone(self.pre('Skill', self.repo, skill='work-flow', args='status'))
         self.assertIsNone(self.marker())
-        self.assertIsNone(self.pre('Skill', self.repo, skill='work-flow', args='fix x'))
+        out = self.pre('Skill', self.repo, skill='work-flow', args='fix x')['hookSpecificOutput']
+        self.assertEqual(out['hookEventName'], 'PreToolUse')
+        self.assertNotIn('permissionDecision', out)
+        self.assertIn('work-flow started', out['additionalContext'])
         self.assertEqual(self.marker()['repos'], [self.repo])
+
+    def test_marker_create_false_creates_nothing(self):
+        self.assertIsNone(lib.write_marker(self.env, SID, ['/x'], create=False))
+        self.assertIsNone(self.marker())
+        self.assertFalse(os.path.exists(lib.marker_path(self.env, SID)))
 
     def test_session_end_deletes(self):
         self.prompt('/work-flow x')
