@@ -1,5 +1,6 @@
 """Decision logic for the work-flow guard hooks. Text in, decision out; git and fs go through small helpers."""
 import json
+import fnmatch
 import os
 import re
 import subprocess
@@ -19,8 +20,9 @@ MARKER_MAX_AGE = 7 * 24 * 3600
 SID_RE = re.compile(r'^[0-9a-fA-F-]{8,64}$')
 REF_RE = re.compile(r'^[A-Za-z0-9_][\w./-]*$')
 HEX_RE = re.compile(r'(?<![0-9A-Za-z])[0-9a-f]{7,40}(?![0-9A-Za-z])')
-PROD_RES = (re.compile(r'\.env\.(?:prod|production|prd)\b[\w.-]*'),
-            re.compile(r'\b(?:prod|production)\.env\b'))
+PROD_LINE_RE = re.compile(r'^\s*[-*]?\s*`?work-flow-prod-files:\s*(.+?)`?\s*$', re.M)
+PROD_FILES_IN_REPO = ('AGENTS.md', 'CLAUDE.md', 'CLAUDE.local.md', os.path.join('.claude', 'CLAUDE.md'))
+TOKEN_SPLIT_RE = re.compile(r'[\s=:\'"`<>(),]+')
 RUN_FILE_RE = re.compile(r'^(.*)/\.agents/work-flow/runs/[^/]+\.md$')
 
 
@@ -353,25 +355,49 @@ def branch_decision(command, sid, marker_exists, session_runs, active):
 MESSAGE_CMDS = (('git', 'commit'), ('git', 'log'), ('git', 'tag'))
 
 
-def prod_match(text):
-    for rx in PROD_RES:
-        for m in rx.finditer(text or ''):
-            seg = re.split(r'[;&|\n]', text[:m.start()])[-1].split()
-            if tuple(os.path.basename(w) for w in seg[:2]) not in MESSAGE_CMDS:
-                return m.group(0)
+def parse_prod_files(text):
+    pats = []
+    for m in PROD_LINE_RE.finditer(text or ''):
+        pats += [p for p in re.split(r'[,\s]+', m.group(1)) if p]
+    return pats
+
+
+def prod_patterns(repos, env, reader=None):
+    reader = reader or read_text
+    paths = [os.path.join(r, f) for r in repos for f in PROD_FILES_IN_REPO]
+    paths.append(os.path.join(claude_home(env), 'CLAUDE.md'))
+    out = []
+    for p in paths:
+        for pat in parse_prod_files(reader(p)):
+            if pat not in out:
+                out.append(pat)
+    return out
+
+
+def prod_match(text, patterns):
+    if not patterns or not text:
+        return None
+    for seg in re.split(r'[;&|\n]', text):
+        words = seg.split()
+        if tuple(os.path.basename(w) for w in words[:2]) in MESSAGE_CMDS:
+            continue
+        for tok in TOKEN_SPLIT_RE.split(seg):
+            if tok and any(fnmatch.fnmatchcase(os.path.basename(tok), p) or fnmatch.fnmatchcase(tok, p)
+                           for p in patterns):
+                return tok
     return None
 
 
-def prod_decision(texts, active):
+def prod_decision(texts, active, patterns):
     if active is None or any(e in ('prod', 'production') for e in active.env):
         return None
     for t in texts:
-        hit = prod_match(t)
+        hit = prod_match(t, patterns)
         if hit:
-            return (f'work-flow: this command reads a production env file ({hit}) and run {active.path} '
+            return (f'work-flow: this command reads a production file ({hit}, listed in work-flow-prod-files) and run {active.path} '
                     f'does not permit production. Ask the user first. Only after the user permits it, '
-                    f'add prod to env: in the state file. This guard matches file names only; a script '
-                    f'that loads production settings by default is not detected.')
+                    f'add prod to env: in the state file. This guard matches the listed file names only; a '
+                    f'script that loads production settings by default is not detected.')
     return None
 
 

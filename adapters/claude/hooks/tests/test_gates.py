@@ -158,12 +158,18 @@ class BashGate(TempCase):
         write_run(self.repo, 'widget', run_text(steps=pending_after('build')))
         self.assertIsNone(self.bash('git checkout -b feat/widget'))
 
+    def test_prod_env_off_without_line(self):
+        write_run(self.repo, 'widget', run_text(env='[]', steps=pending_after('build')))
+        self.assertIsNone(self.bash('cat .env.production'))
+
     def test_prod_env(self):
+        with open(os.path.join(self.repo, 'CLAUDE.md'), 'w') as fh:
+            fh.write('work-flow-prod-files: .env.production, .env.production.*, .env.prod, .env.prd, prod.env\n')
         p = write_run(self.repo, 'widget', run_text(env='[]', steps=pending_after('build')))
         out = self.bash('set -a; . ./.env.production.local; node x.js')
         self.assertTrue(denied(out))
         self.assertIn(p, reason(out))
-        self.assertIn('reads a production env file (.env.production.local)', reason(out))
+        self.assertIn('reads a production file (./.env.production.local, listed in work-flow-prod-files)', reason(out))
         self.assertIn('Ask the user first', reason(out))
         self.assertIsNone(self.bash('git commit -m "rm .env.production"'))
         self.assertTrue(denied(self.bash('rg KEY .env.prod')))
@@ -183,6 +189,8 @@ class ReadGrepGate(TempCase):
         super().setUp()
         self.repo = make_repo(self.tmp)
         write_run(self.repo, 'widget', run_text(env='[local]', steps=pending_after('build')))
+        with open(os.path.join(self.repo, 'CLAUDE.md'), 'w') as fh:
+            fh.write('work-flow-prod-files: .env.production, .env.production.*, .env.prod, .env.prd, prod.env\n')
 
     def test_read(self):
         self.assertTrue(denied(self.pre('Read', self.repo, file_path=self.repo + '/.env.production')))

@@ -151,6 +151,7 @@ apply on `full-auto`:
 | `docs:` | where the glossary and the decision records are |
 | `work-memory: shared` | commit the project memory |
 | `playbook-repo:` | the repository that gets the issues from `work-retro` |
+| `work-flow-prod-files:` | glob patterns of production files (for example `.env.production, .env.production.*`); the guard hooks deny reading them while the run does not permit production. Read from `AGENTS.md`, `CLAUDE.md`, `CLAUDE.local.md`, `.claude/CLAUDE.md`, and the user's `~/.claude/CLAUDE.md`. No line: no check |
 
 ### Tickets
 

@@ -132,17 +132,23 @@ def on_pre_tool(ctx, allow_roots):
         return _deny(reason) if reason else None
     if tool == 'Bash':
         cmd = ti.get('command') or ''
-        if not (lib.creates_branch(cmd) or lib.prod_match(cmd)) or ctx.quick_skip():
+        if ctx.quick_skip():
+            return None
+        pats = lib.prod_patterns(ctx.repos(), ctx.env)
+        if not (lib.creates_branch(cmd) or lib.prod_match(cmd, pats)):
             return None
         active = ctx.active()
         reason = (lib.branch_decision(cmd, ctx.sid, ctx.marker is not None, ctx.session_runs(), active)
-                  or lib.prod_decision([cmd], active))
+                  or lib.prod_decision([cmd], active, pats))
         return _deny(reason) if reason else None
     if tool in ('Read', 'Grep'):
         texts = [ti.get(k) for k in ('file_path', 'path') if isinstance(ti.get(k), str)]
-        if not any(lib.prod_match(t) for t in texts) or ctx.quick_skip():
+        if not texts or ctx.quick_skip():
             return None
-        reason = lib.prod_decision(texts, ctx.active())
+        pats = lib.prod_patterns(ctx.repos(), ctx.env)
+        if not any(lib.prod_match(t, pats) for t in texts):
+            return None
+        reason = lib.prod_decision(texts, ctx.active(), pats)
         return _deny(reason) if reason else None
     return None
 

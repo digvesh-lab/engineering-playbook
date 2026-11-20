@@ -123,23 +123,42 @@ class StartSignals(unittest.TestCase):
         self.assertFalse(lib.index_has_final_line('- 2026-11-20 x | in-progress |\n', 'y'))
 
 
+PATS = ['.env.production', '.env.production.*', '.env.prod', '.env.prod-*', '.env.prd', 'prod.env',
+        'production.env']
+
+
 class ProdMatch(unittest.TestCase):
     def test_hits(self):
         for t in ('cat .env.production.local', '.env.prod', 'src/.env.prd', 'x/.env.prod-backup',
                   'prod.env', 'cp production.env /x'):
-            self.assertTrue(lib.prod_match(t), t)
+            self.assertTrue(lib.prod_match(t, PATS), t)
 
     def test_misses(self):
         for t in ('.env.local', '.env.example', '.env', '.env.products', 'reproduction.env', 'npm run prod', ''):
-            self.assertIsNone(lib.prod_match(t), t)
+            self.assertIsNone(lib.prod_match(t, PATS), t)
+
+    def test_no_patterns_never_matches(self):
+        self.assertIsNone(lib.prod_match('cat .env.production', []))
+
+    def test_parse_prod_files_line(self):
+        text = 'x\nwork-flow-prod-files: .env.production*, config/prod.json\n- `work-flow-prod-files: a.env`\n'
+        self.assertEqual(lib.parse_prod_files(text), ['.env.production*', 'config/prod.json', 'a.env'])
+        self.assertEqual(lib.parse_prod_files('work-flow-defaults: full-auto'), [])
+
+    def test_prod_patterns_from_repo_and_home(self):
+        files = {'/r/CLAUDE.md': 'work-flow-prod-files: .env.prod', '/r/AGENTS.md': 'work-flow-prod-files: .env.prod, p.json',
+                 '/h/CLAUDE.md': 'work-flow-prod-files: secrets/prod.yml'}
+        pats = lib.prod_patterns(['/r'], {'CLAUDE_HOME': '/h'}, reader=files.get)
+        self.assertEqual(sorted(pats), ['.env.prod', 'p.json', 'secrets/prod.yml'])
+        self.assertTrue(lib.prod_match('cat /x/secrets/prod.yml', ['*/secrets/prod.yml']))
 
     def test_message_commands_skipped(self):
         for t in ('git commit -m "drop .env.production"', 'git log -S.env.production', 'git tag -m .env.prod v1'):
-            self.assertIsNone(lib.prod_match(t), t)
+            self.assertIsNone(lib.prod_match(t, PATS), t)
         for t in ('cat .env.production', 'source .env.prod', 'node --env-file=.env.production x.js',
                   'git log; cat .env.prod', 'rg -n KEY .env.production.local', 'ag x .env.prod',
                   'git show HEAD:.env.production', 'ls && git show x:.env.prod'):
-            self.assertTrue(lib.prod_match(t), t)
+            self.assertTrue(lib.prod_match(t, PATS), t)
 
 
 class BranchCreation(unittest.TestCase):
