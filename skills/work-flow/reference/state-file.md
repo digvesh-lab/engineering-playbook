@@ -21,9 +21,10 @@ Part of the `work-flow` contract. The rules in `SKILL.md` have priority.
   unless a step needs that detail.
 - **If you cannot read this file or the template here**, stop and tell the
   user. Do not rebuild the template from memory. The usual cause: the host
-  does not permit reads of the skill folder. The fix: a read permission
-  for the skill folder and for the folder that its link points to.
-  `install.sh` prints the rules.
+  does not permit reads of the skill folder. The fix: add the folder that
+  the skill link points to (the playbook clone) to the host's working
+  directories, and read the reference files through that path.
+  `install.sh` prints the setting.
 - `resume <slug>`: read the state file. Check that the branch, the latest
   commit, and the pull request agree with it. If they do not, that is a hard
   stop (see Hard stops in `SKILL.md`). Write or replace the `session:` line
