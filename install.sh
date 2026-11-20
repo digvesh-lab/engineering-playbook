@@ -1,7 +1,9 @@
 #!/usr/bin/env bash
 # Links the skills, and installs the subagent definitions of one host, into the user's home.
 # Codex does not start a subagent whose definition is a symlink, so those files are copied.
-# Usage: install.sh [--agent claude|codex|kiro|agy] [--fast-model NAME] [--strong-model NAME] [--uninstall]
+# Usage: install.sh [--agent claude|codex|kiro|agy] [--fast-model NAME] [--strong-model NAME] [--no-hooks] [--uninstall]
+# claude: also adds the work-flow guard hooks to ~/.claude/settings.json (backup: settings.json.bak).
+# --no-hooks skips that; --uninstall removes them.
 # --fast-model and --strong-model (codex, agy): the model for the scout, and for the architect and
 # reviewer. Without them each subagent uses the model of the session. No model name is kept in
 # this repository, because model names change.
@@ -10,6 +12,7 @@ src="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 agent=claude
 uninstall=0
 copy_agents=0
+hooks=1
 fast_model=""
 strong_model=""
 while [[ $# -gt 0 ]]; do
@@ -17,8 +20,9 @@ while [[ $# -gt 0 ]]; do
     --agent) agent="${2:?--agent needs a name}"; shift 2 ;;
     --fast-model) fast_model="${2:?--fast-model needs a name}"; shift 2 ;;
     --strong-model) strong_model="${2:?--strong-model needs a name}"; shift 2 ;;
+    --no-hooks) hooks=0; shift ;;
     --uninstall) uninstall=1; shift ;;
-    -h|--help) sed -n '2,6p' "$0"; exit 0 ;;
+    -h|--help) sed -n '2,9p' "$0"; exit 0 ;;
     *) echo "unknown option: $1" >&2; exit 2 ;;
   esac
 done
@@ -84,8 +88,19 @@ elif [[ $uninstall -eq 0 ]]; then
   echo "      no model routing, and the review of medium or large work needs a new thread." >&2
 fi
 
+if [[ "$agent" == claude ]]; then
+  hook_installer="$src/adapters/claude/hooks/install_hooks.py"
+  if [[ $uninstall -eq 1 ]]; then
+    if command -v python3 >/dev/null; then python3 -I "$hook_installer" uninstall; fi
+  elif [[ $hooks -eq 1 ]]; then
+    if command -v python3 >/dev/null; then python3 -I "$hook_installer" install
+    else echo "note: python3 not found; the work-flow guard hooks were not installed." >&2; fi
+  fi
+fi
+
 if [[ "$agent" == claude && $uninstall -eq 0 ]]; then
   echo "note: the skills read their reference/ files at run time. If the host blocks those reads," >&2
-  echo "      add these rules to permissions.allow in ~/.claude/settings.json:" >&2
-  echo "      \"Read(~/.claude/skills/**)\", \"Read(/$src/skills/**)\"" >&2
+  echo "      add the clone to permissions.additionalDirectories in ~/.claude/settings.json:" >&2
+  echo "      \"$src\" (the realpath of ~/.claude/skills/work-flow is inside it)," >&2
+  echo "      and read the reference files through the clone path." >&2
 fi

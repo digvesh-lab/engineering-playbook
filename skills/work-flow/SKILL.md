@@ -18,7 +18,10 @@ The task is an issue number or URL, a ticket, pasted text, or a sentence.
 
 ## Read this first
 
-- This workflow is skills only. Nothing outside the agent enforces it.
+- The skills hold the rules. On a host with hooks, the work-flow guard
+  (`adapters/claude/hooks/`) enforces some of them: the propose gate, the
+  base branch, the state file, step 12, and production env files. On other
+  hosts nothing outside the agent enforces them.
 - The skills name no agent product. "The host" is the coding agent that
   runs them. "The instruction file" is the project file that the host loads
   at the start: `AGENTS.md`, or `CLAUDE.md`. If the project has the two

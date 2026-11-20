@@ -10,6 +10,7 @@ format.
 | work-flow | a chain of skills that takes a coding task from assessment to a pull request | `skills/work-*` |
 | git-standards | default conventions for branches, commits, pull requests, and issues | `skills/git-standards` |
 | subagents | 4 role definitions that work-flow uses when the agent supports them | `adapters/<agent>/agents/` |
+| work-flow guard | Claude Code hooks that enforce the work-flow gates and records; `install.sh --agent claude` adds them to `~/.claude/settings.json` (`--no-hooks` skips, `--uninstall` removes) | `adapters/claude/hooks` |
 | work-flow-progress | a Claude Code mod: a band that shows the progress of the work-flow run of the current session | `adapters/claude/mods/work-flow-progress` |
 | project-docs | a minimal `docs/` folder: 5 items, for agents and people | `skills/project-docs` |
 | skill-standards | the rules and a check script for writing a skill in this playbook | `skills/skill-standards` |
