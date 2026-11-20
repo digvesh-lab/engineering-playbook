@@ -166,7 +166,7 @@ class BashGate(TempCase):
         self.assertIn('reads a production env file (.env.production.local)', reason(out))
         self.assertIn('Ask the user first', reason(out))
         self.assertIsNone(self.bash('git commit -m "rm .env.production"'))
-        self.assertIsNone(self.bash('rg KEY .env.prod'))
+        self.assertTrue(denied(self.bash('rg KEY .env.prod')))
         self.assertTrue(denied(self.bash('node --env-file=.env.production x.js')))
         self.assertIsNone(self.bash('cat .env.local .env.example'))
         write_run(self.repo, 'widget', run_text(env='[prod]', steps=pending_after('build')))

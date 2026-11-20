@@ -133,12 +133,12 @@ class ProdMatch(unittest.TestCase):
         for t in ('.env.local', '.env.example', '.env', '.env.products', 'reproduction.env', 'npm run prod', ''):
             self.assertIsNone(lib.prod_match(t), t)
 
-    def test_search_commands_skipped(self):
-        for t in ('git commit -m "drop .env.production"', 'rg .env.prod src', 'grep -r prod.env .',
-                  'git log -S.env.production', 'ls && git show x:.env.prod'):
+    def test_message_commands_skipped(self):
+        for t in ('git commit -m "drop .env.production"', 'git log -S.env.production', 'git tag -m .env.prod v1'):
             self.assertIsNone(lib.prod_match(t), t)
         for t in ('cat .env.production', 'source .env.prod', 'node --env-file=.env.production x.js',
-                  'git log; cat .env.prod'):
+                  'git log; cat .env.prod', 'rg -n KEY .env.production.local', 'ag x .env.prod',
+                  'git show HEAD:.env.production', 'ls && git show x:.env.prod'):
             self.assertTrue(lib.prod_match(t), t)
 
 

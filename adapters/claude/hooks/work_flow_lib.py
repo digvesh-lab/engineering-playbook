@@ -350,15 +350,14 @@ def branch_decision(command, sid, marker_exists, session_runs, active):
     return None
 
 
-SEARCH_WORDS = ('git', 'rg', 'grep', 'ag')
+MESSAGE_CMDS = (('git', 'commit'), ('git', 'log'), ('git', 'tag'))
 
 
 def prod_match(text):
     for rx in PROD_RES:
         for m in rx.finditer(text or ''):
             seg = re.split(r'[;&|\n]', text[:m.start()])[-1].split()
-            first = os.path.basename(seg[0]) if seg else ''
-            if first not in SEARCH_WORDS:
+            if tuple(os.path.basename(w) for w in seg[:2]) not in MESSAGE_CMDS:
                 return m.group(0)
     return None
 
