@@ -9,7 +9,7 @@ This skill is the contract. The step skills do the work and obey this file.
 
 ```
 /work-flow <task> [preset] [step:manual|auto ...] [tries=N] [rounds=N] [cost=...] [env:...]
-/work-flow resume [slug]      continue a run
+/work-flow resume [slug]      continue a run (no slug: list the runs and ask which)
 /work-flow feedback [slug]    bring PR comments or CI failures into the loop
 /work-flow status             list the runs and their state
 ```
@@ -322,9 +322,11 @@ Detail: `reference/language.md`.
 - Keep `.agents/work-flow/runs/<slug>.md`. Add `.agents/work-flow/runs/` to `.git/info/exclude`.
 - Each skill reads the state file first. The state file is the truth. Your
   memory of the conversation is not.
-- `resume`: read the state file. Check that the branch and the latest
+- `resume <slug>`: read the state file. Check that the branch and the latest
   commit agree with it. Rewrite the `session:` line. Show the switches.
   Continue from the first step that did not pass.
+- `resume` with no slug, and `status`: follow "Resume without a slug" in
+  `reference/state-file.md`.
 - A new thread between steps, then `resume`, is normal. It keeps the context small.
 
 Template: `reference/state-file.md`.

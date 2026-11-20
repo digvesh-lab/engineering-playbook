@@ -24,7 +24,7 @@ Part of the `work-flow` contract. The rules in `SKILL.md` have priority.
   does not permit reads of the skill folder. The fix: a read permission
   for the skill folder and for the folder that its link points to.
   `install.sh` prints the rules.
-- `resume`: read the state file. Check that the branch, the latest
+- `resume <slug>`: read the state file. Check that the branch, the latest
   commit, and the pull request agree with it. If they do not, that is a hard
   stop (see Hard stops in `SKILL.md`). Write or replace the `session:` line
   with the current session; remove it if there is no id. Show the switches.
@@ -33,6 +33,22 @@ Part of the `work-flow` contract. The rules in `SKILL.md` have priority.
   no id but has a scratchpad path `.../<uuid>/scratchpad`, use that uuid.
   Write the line as `session: <id>` with nothing after the id. If there is
   no id, omit the line.
+
+## Resume without a slug
+
+1. List `.agents/work-flow/runs/*.md`. Skip `*.notes.md`. If there is none,
+   say so and stop.
+2. Show 1 line for each run: slug, `task:`, `branch:`, and the first step
+   that did not pass (`done` if each step passed or was skipped). Put the
+   runs that are not `done` first. Sort by the date of the last phase-log
+   line, newest first; break ties, or with no phase log, use the file
+   modification time.
+3. Ask the user to select one. Always ask, also when only 1 run exists, and
+   give a `cancel` option. If the question tool of the host limits the number
+   of options, show the newest runs and accept a slug typed as free text.
+4. Continue as for `resume <slug>`.
+
+`status` uses steps 1 and 2 and stops.
 
 Template:
 

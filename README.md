@@ -74,7 +74,7 @@ withdrawn, run the command again with the new name.
 
 ```
 /work-flow <task> [preset] [step:manual|auto ...]
-/work-flow resume [slug]
+/work-flow resume [slug]      no slug: list the runs and select one
 /work-flow feedback [slug]
 /work-flow status
 /work-retro
