@@ -89,9 +89,6 @@ class EditGate(TempCase):
         self.make_marker([self.repo])
         self.edit(os.path.join(other, '.agents', 'work-flow', 'runs', 'w.md'))
         self.assertIn(other, self.marker()['repos'])
-        self.handle('PostToolUse', self.repo, tool_name='Write',
-                    tool_input={'file_path': os.path.join(self.tmp, 'third', '.agents/work-flow/runs/w.md')})
-        self.assertIn(os.path.join(self.tmp, 'third'), self.marker()['repos'])
 
     def test_run_file_edit_without_marker_creates_none(self):
         self.edit(os.path.join(self.repo, '.agents', 'work-flow', 'runs', 'w.md'))

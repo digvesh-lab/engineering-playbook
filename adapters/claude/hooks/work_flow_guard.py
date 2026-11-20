@@ -146,14 +146,6 @@ def on_pre_tool(ctx, allow_roots):
     return None
 
 
-def on_post_tool(ctx):
-    if ctx.data.get('tool_name') in GATED_EDIT:
-        raw = (ctx.data.get('tool_input') or {}).get('file_path')
-        if raw:
-            _note_run_file(ctx, _abs(raw, ctx.cwd))
-    return None
-
-
 def on_stop(ctx):
     if not ctx.sid or ctx.quick_skip():
         return None
@@ -177,8 +169,6 @@ def handle(data, env, git=None, allow_roots=lib.TMP_ROOTS):
         return on_prompt(ctx)
     if event == 'PreToolUse':
         return on_pre_tool(ctx, allow_roots)
-    if event == 'PostToolUse':
-        return on_post_tool(ctx)
     if event == 'Stop':
         return on_stop(ctx)
     if event == 'SessionEnd':
