@@ -1,0 +1,6 @@
+{
+  "name": "work-flow-progress",
+  "version": "0.1.1",
+  "description": "Shows how much of a /work-flow run is done: a band above the prompt with a progress bar or the 12 steps, switched with /wf-progress.",
+  "types": "./types/index.d.ts"
+}
